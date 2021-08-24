@@ -2,6 +2,7 @@
 
 # Lightning-Hydra-Template
 
+Modified based on [ashleve's v1.0 implementation](https://github.com/ashleve/lightning-hydra-template).
 
 <a href="https://www.python.org/"><img alt="Python" src="https://img.shields.io/badge/-Python 3.7--3.9-blue?style=for-the-badge&logo=python&logoColor=white"></a>
 <a href="https://pytorch.org/get-started/locally/"><img alt="PyTorch" src="https://img.shields.io/badge/-PyTorch 1.8+-ee4c2c?style=for-the-badge&logo=pytorch&logoColor=white"></a>
