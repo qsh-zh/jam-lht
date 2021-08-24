@@ -11,6 +11,7 @@ from pytorch_lightning import (
 )
 from pytorch_lightning.loggers import LightningLoggerBase
 
+from src.logger.jam_wandb import JamWandb
 from src.utils import utils
 
 log = utils.get_logger(__name__)
@@ -63,6 +64,7 @@ def train(config: DictConfig) -> Optional[float]:
 
     # Send some parameters from config to all lightning loggers
     log.info("Logging hyperparameters!")
+    JamWandb.g_cfg = config
     utils.log_hyperparameters(
         config=config,
         model=model,
