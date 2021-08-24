@@ -29,15 +29,15 @@ repos:
       - id: yamllint
         args: [-c=.yamllint]
 
-   #- repo: local
-     #hooks:
-       #- id: pylint
-         #name: pylint
-         #entry: pylint
-         #language: system
-         #types: [python]
-         #args:
-           #- --rcfile=~/.pylintrc
+  - repo: local
+    hooks:
+      - id: pylint
+        name: pylint
+        entry: pylint
+        language: system
+        types: [python]
+        args:
+          - --rcfile=~/.pylintrc
 
   - repo: https://github.com/kynan/nbstripout
     rev: 0.5.0
