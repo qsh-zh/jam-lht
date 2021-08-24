@@ -37,9 +37,8 @@ _WANDB_AVAILABLE = _module_available("wandb")
 _WANDB_GREATER_EQUAL_0_10_22 = _compare_version("wandb", operator.ge, "0.10.22")
 
 try:
-    from wandb.wandb_run import Run
-
     import wandb
+    from wandb.wandb_run import Run
 except ImportError:
     # needed for test mocks, these tests shall be updated
     wandb, Run = None, None
@@ -257,12 +256,12 @@ class WandbLogger(LightningLoggerBase):
         elif self._log_model is True:
             self._checkpoint_callback = checkpoint_callback
 
-    @rank_zero_only
-    def finalize(self, status: str) -> None:
-        # log checkpoints as artifacts
-        if self._checkpoint_callback:
-            self._scan_and_log_checkpoints(self._checkpoint_callback)
-        JamWandb.finish()
+    # @rank_zero_only
+    # def finalize(self, status: str) -> None:
+    # # log checkpoints as artifacts
+    # if self._checkpoint_callback:
+    # self._scan_and_log_checkpoints(self._checkpoint_callback)
+    # JamWandb.finish()
 
     def _scan_and_log_checkpoints(
         self, checkpoint_callback: "ReferenceType[ModelCheckpoint]"

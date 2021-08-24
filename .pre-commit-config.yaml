@@ -29,27 +29,15 @@ repos:
       - id: yamllint
         args: [-c=.yamllint]
 
-  # python code analysis
-  - repo: https://github.com/PyCQA/flake8
-    rev: 3.9.2
-    hooks:
-      - id: flake8
-        additional_dependencies:
-          [-e, "git+git://github.com/pycqa/pyflakes.git@1911c20#egg=pyflakes"]
-        exclude: torchsde
-        # entry: flake8
-        # language: python
-        # types: [python]
-
-  # - repo: local
-  #   hooks:
-  #     - id: pylint
-  #       name: pylint
-  #       entry: pylint
-  #       language: system
-  #       types: [python]
-  #       args:
-  #         - --rcfile=~/.pylintrc
+   #- repo: local
+     #hooks:
+       #- id: pylint
+         #name: pylint
+         #entry: pylint
+         #language: system
+         #types: [python]
+         #args:
+           #- --rcfile=~/.pylintrc
 
   - repo: https://github.com/kynan/nbstripout
     rev: 0.5.0
@@ -59,4 +47,3 @@ repos:
         entry: nbstripout
         language: python
         types: [jupyter]
-

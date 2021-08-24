@@ -180,6 +180,6 @@ def finish(
         from src.logger.wandb_logger import WandbLogger
 
         if isinstance(lg, WandbLogger):
-            import wandb
+            from src.logger.jam_wandb import JamWandb
 
-            wandb.finish()
+            JamWandb.finish()
