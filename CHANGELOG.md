@@ -9,8 +9,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
-* Changelog
+* CHANGELOG.log
 * `doc/guide.md` for development
+* poetry management [pr](https://github.com/qshzh/lightning-hydra-template/pull/1)
+* jam wandb log [pr](https://github.com/qshzh/lightning-hydra-template/pull/1)
 
 ### Changed
 
@@ -21,4 +23,3 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 ### Removed
 
 ### Fixed
-
