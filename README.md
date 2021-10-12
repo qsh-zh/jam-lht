@@ -75,7 +75,7 @@ The directory structure of new project looks like this:
 │   ├── datamodule              <- Datamodule configs
 │   ├── experiment              <- Experiment configs
 │   ├── hparams_search          <- Hyperparameter search configs
-│   ├── hydra                   <- Hydra related configs
+│   ├── mode                    <- Running mode configs
 │   ├── logger                  <- Logger configs
 │   ├── model                   <- Model configs
 │   ├── trainer                 <- Trainer configs
@@ -109,9 +109,7 @@ The directory structure of new project looks like this:
 ├── .gitignore              <- List of files/folders ignored by git
 ├── .pre-commit-config.yaml <- Configuration of automatic code formatting
 ├── setup.cfg               <- Configurations of linters and pytest
-├── Dockerfile              <- File for building docker container
 ├── requirements.txt        <- File for installing python dependencies
-├── LICENSE
 └── README.md
 ```
 <br>
@@ -151,7 +149,6 @@ python run.py trainer.max_epochs=20 model.lr=1e-4
 > You can also add new parameters with `+` sign.
 ```yaml
 python run.py +model.new_param="uwu"
-
 ```
 
 </details>
@@ -200,7 +197,7 @@ python run.py trainer.gpus=1 +trainer.amp_backend="apex" +trainer.precision=16 \
 <details>
   <summary><b>Train model with any logger available in PyTorch Lightning, like Weights&Biases</b></summary>
 
-> PyTorch Lightning provides convenient integrations with most popular logging frameworks. Read more [here](#experiment-tracking). Using wandb requires you to [setup account](https://www.wandb.com/) first. After that just complete the config as below.<br>
+> PyTorch Lightning provides convenient integrations with most popular logging frameworks, like Tensorboard, Neptune or simple csv files. Read more [here](#experiment-tracking). Using wandb requires you to [setup account](https://www.wandb.com/) first. After that just complete the config as below.<br>
 **Click [here](https://wandb.ai/hobglob/template-dashboard/) to see example wandb dashboard generated with this template.**
 ```yaml
 # set project and entity names in `configs/logger/wandb`
@@ -210,9 +207,25 @@ wandb:
 ```
 
 ```yaml
-# train model with Weights&Biases
-# link to wandb dashboard should appear in the terminal
+# train model with Weights&Biases (link to wandb dashboard should appear in the terminal)
 python run.py logger=wandb
+```
+
+</details>
+
+
+<details>
+<summary><b>Use different running modes</b></summary>
+
+```yaml
+# debug mode changes logging folder to `logs/debug/`
+# also enables default trainer debugging options from `configs/trainer/debug.yaml`
+# also sets level of all command line loggers to 'DEBUG'
+python run.py mode=debug
+
+# experiment mode changes logging folder to `logs/experiments/name_of_your_experiment/`
+# name is also used by experiment loggers (like tensorboard or wandb)
+python run.py mode=exp name='my_new_experiment_253'
 ```
 
 </details>
@@ -270,16 +283,20 @@ python run.py +trainer.max_time="00:12:00:00"
 
 ```yaml
 # run 1 train, val and test loop, using only 1 batch
-python run.py debug=true
+python run.py +trainer.fast_dev_run=true
 
 # print full weight summary of all PyTorch modules
 python run.py trainer.weights_summary="full"
 
-# print execution time profiling after training ends
-python run.py +trainer.profiler="simple"
-
 # raise exception, if any of the parameters or the loss are NaN or +/-inf
 python run.py +trainer.terminate_on_nan=true
+
+# quick debug with all the previous options enabled
+# (this is also enabled when using `python run.py mode=debug`)
+python run.py trainer=debug
+
+# print execution time profiling after training ends
+python run.py +trainer.profiler="simple"
 
 # try overfitting to 1 batch
 python run.py +trainer.overfit_batches=1 trainer.max_epochs=20
@@ -349,12 +366,12 @@ python run.py -m 'experiment=glob(*)'
 
 </details>
 
-<details>
+<!-- <details>
 <summary><b>Execute sweep on a SLURM cluster</b></summary>
 
 > This should be achievable with either [the right lightning trainer flags](https://pytorch-lightning.readthedocs.io/en/latest/clouds/cluster.html?highlight=SLURM#slurm-managed-cluster) or simple config using [Submitit launcher for Hydra](https://hydra.cc/docs/plugins/submitit_launcher). Example is not yet implemented in this template.
 
-</details>
+</details> -->
 
 
 <details>
@@ -368,7 +385,10 @@ python run.py -m 'experiment=glob(*)'
 
 ## 🐳&nbsp;&nbsp;Docker
 First you will need to [install Nvidia Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html) to enable GPU  support. <br>
-To build the container from provided Dockerfile use:
+
+The template Dockerfile is provided on branch [`dockerfiles`](https://github.com/ashleve/lightning-hydra-template/tree/dockerfiles). Copy it to the template root folder.
+
+To build the container use:
 ```bash
 docker build -t <project_name> .
 ```
@@ -434,7 +454,7 @@ defaults:
     - callbacks: default.yaml  # set this to null if you don't want to use callbacks
     - logger: null  # set logger here or use command line (e.g. `python run.py logger=wandb`)
 
-    - hydra: default.yaml
+    - mode: default.yaml
 
     - experiment: null
     - hparams_search: null
@@ -599,13 +619,13 @@ By default, logs have the following structure:
 │
 ```
 
-You can change this structure by modifying paths in [hydra configuration](configs/hydra/default.yaml).
+You can change this structure by modifying paths in [hydra configuration](configs/mode).
 <br><br>
 
 
 ### Experiment Tracking
 PyTorch Lightning supports the most popular logging frameworks:<br>
-**[Weights&Biases](https://www.wandb.com/) · [Neptune](https://neptune.ai/) · [Comet](https://www.comet.ml/) · [MLFlow](https://mlflow.org) · [Aim](https://github.com/aimhubio/aim) · [Tensorboard](https://www.tensorflow.org/tensorboard/)**
+**[Weights&Biases](https://www.wandb.com/) · [Neptune](https://neptune.ai/) · [Comet](https://www.comet.ml/) · [MLFlow](https://mlflow.org) · [Tensorboard](https://www.tensorflow.org/tensorboard/)**
 
 These tools help you keep track of hyperparameters and output metrics and allow you to compare and visualize results. To use one of them simply complete its configuration in [configs/logger](configs/logger) and run:
  ```yaml
@@ -685,7 +705,7 @@ hydra:
 </details>
 
 Next, you can execute it with: `python run.py -m hparams_search=mnist_optuna`<br>
-Using this approach doesn't require you to add any boilerplate into your pipeline, everything is defined in a single config file. You can use different optimization frameworks integrated with Hydra, like Optuna, Ax or Nevergrad.
+Using this approach doesn't require you to add any boilerplate into your pipeline, everything is defined in a single config file. You can use different optimization frameworks integrated with Hydra, like Optuna, Ax or Nevergrad. The `optimization_results.yaml` will be available under `logs/multirun` folder.
 <br><br>
 
 
@@ -785,6 +805,11 @@ To provide examples of logging custom visualisations with callbacks only:
 - **LogF1PrecRecHeatmap**
 - **LogImagePredictions**
 
+To try all of the callbacks at once, use:
+```yaml
+python run.py logger=wandb callbacks=wandb
+```
+
 To see the result of all the callbacks attached, take a look at [this experiment dashboard](https://wandb.ai/hobglob/template-tests/runs/3rw7q70h).
 <br><br>
 
@@ -802,22 +827,13 @@ python run.py trainer.gpus=4 +trainer.accelerator="ddp"
 <br><br>
 
 
-### Extra Features
-List of extra utilities available in the template:
-- loading environment variables from [.env](.env.example) file
-- pretty printing config with [Rich](https://github.com/willmcgugan/rich) library
-- disabling python warnings
-- debug mode
-<!-- - (TODO) resuming latest run -->
-
-You can easily remove any of those by modifying [run.py](run.py) and [src/train.py](src/train.py).
+### Reproducibility
+To reproduce previous experiment, simply load its config from logs:
+```yaml
+python run.py --config-path /logs/runs/.../.hydra/ --config-name config.yaml
+```
+The `config.yaml` from `.hydra` folder contains all overriden parameters and sections.
 <br><br>
-
-<!--
-### Limitations
-(TODO)
-<br><br><br>
- -->
 
 
 ## Best Practices
@@ -1076,11 +1092,10 @@ conda activate myenv
 eval "$(python run.py -sc install=bash)"
 
 # enable aliases for debugging
-alias test='pytest'
-alias debug1='python run.py debug=true'
-alias debug2='python run.py trainer.gpus=1 trainer.max_epochs=1'
-alias debug3='python run.py trainer.gpus=1 trainer.max_epochs=1 +trainer.limit_train_batches=0.1'
-alias debug_wandb='python run.py trainer.gpus=1 trainer.max_epochs=1 logger=wandb logger.wandb.project=tests'
+alias debug='python run.py mode=debug'
+alias debug2='python run.py mode=debug trainer.fast_dev_run=false trainer.max_epochs=1 trainer.gpus=0'
+alias debug3='python run.py mode=debug trainer.fast_dev_run=false trainer.max_epochs=1 trainer.gpus=1'
+alias debug_wandb='python run.py mode=debug trainer.fast_dev_run=false trainer.max_epochs=1 trainer.gpus=1 logger=wandb logger.wandb.project=tests'
 ```
 (these commands will be executed whenever you're openning or switching terminal to folder containing `.autoenv` file)
 
@@ -1164,18 +1179,39 @@ This template was inspired by:
 
 </details>
 
-<!-- <details>
-<summary><b>List of repositories using this template</b></summary>
-
-- [ashleve/graph_classification](https://github.com/ashleve/graph_classification) - benchmarking graph neural network architectures on graph classification datasets (Open Graph Benchmarks and image classification from superpixels)
-
-</details> -->
-
 
 <!-- ## :star:&nbsp; Stargazers Over Time
-
 [![Stargazers over time](https://starchart.cc/ashleve/lightning-hydra-template.svg)](https://starchart.cc/ashleve/lightning-hydra-template) -->
 
+
+<br>
+
+
+## License
+This project is licensed under the MIT License.
+```
+MIT License
+
+Copyright (c) 2021 ashleve
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
 
 
 <br>

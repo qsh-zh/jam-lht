@@ -29,15 +29,19 @@ def train(config: DictConfig) -> Optional[float]:
     """
 
     # Set seed for random number generators in pytorch, numpy and python.random
-    if "seed" in config:
+    if config.get("seed"):
         seed_everything(config.seed, workers=True)
 
     # Init lightning datamodule
-    log.info(f"Instantiating datamodule <{config.datamodule._target_}>")
+    log.info(
+        f"Instantiating datamodule <{config.datamodule._target_}>"  # pylint: disable=protected-access
+    )
     datamodule: LightningDataModule = hydra.utils.instantiate(config.datamodule)
 
     # Init lightning model
-    log.info(f"Instantiating model <{config.model._target_}>")
+    log.info(
+        f"Instantiating model <{config.model._target_}>"  # pylint: disable=protected-access
+    )
     model: LightningModule = hydra.utils.instantiate(config.model)
 
     # Init lightning callbacks
@@ -45,7 +49,9 @@ def train(config: DictConfig) -> Optional[float]:
     if "callbacks" in config:
         for _, cb_conf in config.callbacks.items():
             if "_target_" in cb_conf:
-                log.info(f"Instantiating callback <{cb_conf._target_}>")
+                log.info(
+                    f"Instantiating callback <{cb_conf._target_}>"  # pylint: disable=protected-access
+                )
                 callbacks.append(hydra.utils.instantiate(cb_conf))
 
     # Init lightning loggers
@@ -53,11 +59,15 @@ def train(config: DictConfig) -> Optional[float]:
     if "logger" in config:
         for _, lg_conf in config.logger.items():
             if "_target_" in lg_conf:
-                log.info(f"Instantiating logger <{lg_conf._target_}>")
+                log.info(
+                    f"Instantiating logger <{lg_conf._target_}>"  # pylint: disable=protected-access
+                )
                 logger.append(hydra.utils.instantiate(lg_conf))
 
     # Init lightning trainer
-    log.info(f"Instantiating trainer <{config.trainer._target_}>")
+    log.info(
+        f"Instantiating trainer <{config.trainer._target_}>"  # pylint: disable=protected-access
+    )
     trainer: Trainer = hydra.utils.instantiate(
         config.trainer, callbacks=callbacks, logger=logger, _convert_="partial"
     )
@@ -95,9 +105,11 @@ def train(config: DictConfig) -> Optional[float]:
     )
 
     # Print path to best checkpoint
-    log.info(f"Best checkpoint path:\n{trainer.checkpoint_callback.best_model_path}")
+    if not config.trainer.get("fast_dev_run"):
+        log.info(f"Best model ckpt: {trainer.checkpoint_callback.best_model_path}")
 
     # Return metric score for hyperparameter optimization
     optimized_metric = config.get("optimized_metric")
     if optimized_metric:
         return trainer.callback_metrics[optimized_metric]
+    return None
