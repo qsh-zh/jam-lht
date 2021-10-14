@@ -5,9 +5,9 @@ description = "decent template for starting a deep learning projects"
 authors = ["qsh.27"]
 
 [tool.poetry.dependencies]
-python = "^3.7"
-torch = "^1.8.1"
-torchvision = "^0.9.1"
+python = ">=3.7, <3.10"
+torch = "^1.9.0"
+torchvision = "^0.10.0"
 pytorch-lightning = "^1.3.8"
 torchmetrics = "^0.4.1"
 hydra-core = "^1.1.0"
@@ -22,6 +22,7 @@ scikit-image = "^0.18.0"
 einops = "0.3.0"
 sh = "^1.14.2"
 seaborn = "^0.11.2"
+jammy = "^0.0.2"
 
 
 [tool.poetry.dev-dependencies]
