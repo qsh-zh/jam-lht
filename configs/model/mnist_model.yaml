@@ -1,4 +1,6 @@
-_target_: src.models.mnist_model.MNISTLitModel
+# for fast prototyping!
+module:
+  _target_: src.models.mnist_model.MNISTLitModel
 
 input_size: 784
 lin1_size: 256
