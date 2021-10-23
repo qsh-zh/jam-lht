@@ -22,7 +22,7 @@ scikit-image = "^0.18.0"
 einops = "0.3.0"
 sh = "^1.14.2"
 seaborn = "^0.11.2"
-jammy = "^0.0.2"
+jammy = "^0.0.3"
 
 
 [tool.poetry.dev-dependencies]

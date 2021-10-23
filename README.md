@@ -1,8 +1,8 @@
 <div align="center">
 
-# Lightning-Hydra-Template
+# Jammy Lightning-Hydra-Template
 
-Modified based on [ashleve's v1.0 implementation](https://github.com/ashleve/lightning-hydra-template).
+Modified based on [ashleve's v1.0 implementation](https://github.com/qsh-zh/jam-lht).
 
 <a href="https://www.python.org/"><img alt="Python" src="https://img.shields.io/badge/-Python 3.7--3.9-blue?style=for-the-badge&logo=python&logoColor=white"></a>
 <a href="https://pytorch.org/get-started/locally/"><img alt="PyTorch" src="https://img.shields.io/badge/-PyTorch 1.8+-ee4c2c?style=for-the-badge&logo=pytorch&logoColor=white"></a>
@@ -12,16 +12,14 @@ Modified based on [ashleve's v1.0 implementation](https://github.com/ashleve/lig
 <!-- <a href="https://hub.docker.com/r/ashlev/lightning-hydra"><img alt="Docker" src="https://img.shields.io/badge/docker-257bd6?style=for-the-badge&logo=docker&logoColor=white"></a> -->
 
 A clean and scalable template to kickstart your deep learning project 🚀⚡🔥<br>
-Click on [<kbd>Use this template</kbd>](https://github.com/ashleve/lightning-hydra-template/generate) to initialize new repository.
-
-*Suggestions are always welcome!*
+Click on [<kbd>Use this template</kbd>](https://github.com/qsh-zh/jam-lht/generate) to initialize new repository.
 
 </div>
 <br><br>
 
 <!--
 If you use this template please add <br>
-[![](https://shields.io/badge/-Lightning--Hydra--Template-017F2F?style=flat&logo=github&labelColor=303030)](https://github.com/ashleve/lightning-hydra-template) <br>
+[![](https://shields.io/badge/-Lightning--Hydra--Template-017F2F?style=flat&logo=github&labelColor=303030)](https://github.com/qsh-zh/jam-lht) <br>
 to your `README.md`.
 <br><br>
 -->
@@ -118,7 +116,7 @@ The directory structure of new project looks like this:
 ## 🚀&nbsp;&nbsp;Quickstart
 ```yaml
 # clone project
-git clone https://github.com/ashleve/lightning-hydra-template
+git clone https://github.com/qsh-zh/jam-lht
 cd lightning-hydra-template
 
 # [OPTIONAL] create conda environment
@@ -132,7 +130,7 @@ Template contains example with MNIST classification.<br>
 When running `python run.py` you should see something like this:
 <div align="center">
 
-![](https://github.com/ashleve/lightning-hydra-template/blob/resources/terminal.png)
+![](https://github.com/qsh-zh/jam-lht/blob/resources/terminal.png)
 
 </div>
 
@@ -386,7 +384,7 @@ python run.py -m 'experiment=glob(*)'
 ## 🐳&nbsp;&nbsp;Docker
 First you will need to [install Nvidia Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html) to enable GPU  support. <br>
 
-The template Dockerfile is provided on branch [`dockerfiles`](https://github.com/ashleve/lightning-hydra-template/tree/dockerfiles). Copy it to the template root folder.
+The template Dockerfile is provided on branch [`dockerfiles`](https://github.com/qsh-zh/jam-lht/tree/dockerfiles). Copy it to the template root folder.
 
 To build the container use:
 ```bash
@@ -840,7 +838,7 @@ The `config.yaml` from `.hydra` folder contains all overriden parameters and sec
 <!--<details>
 <summary><b>Use Docker</b></summary>
 
-Docker makes it easy to initialize the whole training environment, e.g. when you want to execute experiments in cloud or on some private computing cluster. You can extend [dockerfiles](https://github.com/ashleve/lightning-hydra-template/tree/dockerfiles) provided in the template with your own instructions for building the image.<br>
+Docker makes it easy to initialize the whole training environment, e.g. when you want to execute experiments in cloud or on some private computing cluster. You can extend [dockerfiles](https://github.com/qsh-zh/jam-lht/tree/dockerfiles) provided in the template with your own instructions for building the image.<br>
 
 </details> -->
 
@@ -1038,7 +1036,7 @@ setup(
     author="",
     author_email="",
     # replace with your own github project link
-    url="https://github.com/ashleve/lightning-hydra-template",
+    url="https://github.com/qsh-zh/jam-lht",
     install_requires=["pytorch-lightning>=1.2.0", "hydra-core>=1.0.6"],
     packages=find_packages(),
 )
@@ -1181,7 +1179,7 @@ This template was inspired by:
 
 
 <!-- ## :star:&nbsp; Stargazers Over Time
-[![Stargazers over time](https://starchart.cc/ashleve/lightning-hydra-template.svg)](https://starchart.cc/ashleve/lightning-hydra-template) -->
+[![Stargazers over time](https://starchart.cc/qsh-zh/jam-lht.svg)](https://starchart.cc/qsh-zh/jam-lht) -->
 
 
 <br>
@@ -1232,7 +1230,7 @@ SOFTWARE.
 <a href="https://pytorch.org/get-started/locally/"><img alt="PyTorch" src="https://img.shields.io/badge/PyTorch-ee4c2c?logo=pytorch&logoColor=white"></a>
 <a href="https://pytorchlightning.ai/"><img alt="Lightning" src="https://img.shields.io/badge/-Lightning-792ee5?logo=pytorchlightning&logoColor=white"></a>
 <a href="https://hydra.cc/"><img alt="Config: Hydra" src="https://img.shields.io/badge/Config-Hydra-89b8cd"></a>
-<a href="https://github.com/ashleve/lightning-hydra-template"><img alt="Template" src="https://img.shields.io/badge/-Lightning--Hydra--Template-017F2F?style=flat&logo=github&labelColor=gray"></a><br>
+<a href="https://github.com/qsh-zh/jam-lht"><img alt="Template" src="https://img.shields.io/badge/-Lightning--Hydra--Template-017F2F?style=flat&logo=github&labelColor=gray"></a><br>
 [![Paper](http://img.shields.io/badge/paper-arxiv.1001.2234-B31B1B.svg)](https://www.nature.com/articles/nature14539)
 [![Conference](http://img.shields.io/badge/AnyConference-year-4b44ce.svg)](https://papers.nips.cc/paper/2020)
 

@@ -5,6 +5,7 @@ from typing import List, Sequence
 import pytorch_lightning as pl
 import rich.syntax
 import rich.tree
+from jammy import link_hyd_run
 from omegaconf import DictConfig, OmegaConf
 from pytorch_lightning.utilities import rank_zero_only
 
@@ -44,6 +45,8 @@ def extras(config: DictConfig) -> None:
 
     log = get_logger(__name__)
 
+    # quick link
+    rank_zero_only(link_hyd_run)()
     # disable python warnings if <config.ignore_warnings=True>
     if config.get("ignore_warnings"):
         log.info("Disabling python warnings! <config.ignore_warnings=True>")
