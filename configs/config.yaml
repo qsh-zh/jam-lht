@@ -17,7 +17,13 @@ defaults:
   # enable color logging
   - override hydra/hydra_logging: colorlog
   - override hydra/job_logging: colorlog
+  # use joblib for multi runs
+  - override hydra/launcher: joblib
 
+hydra:
+  launcher:
+    # override the number of jobs for joblib
+    n_jobs: 2
 # path to original working directory
 # hydra hijacks working directory by changing it to the current log directory,
 # so it's useful to have this path as a special variable
