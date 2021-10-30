@@ -180,7 +180,7 @@ python run.py trainer.gpus=4 +trainer.num_nodes=2 +trainer.accelerator='ddp'
 <summary><b>Multi runs</b></summary>
 
 ```yaml
-python run.py -m trainer.gpus=1 trainer.auto_select_gpus=true model.lr=1e-2,1e-3,1e-4
+python run.py -m trainer.gpus=1 +trainer.auto_select_gpus=true model.lr=1e-2,1e-3,1e-4
 ```
 
 </details>
