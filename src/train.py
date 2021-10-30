@@ -1,6 +1,7 @@
 from typing import List, Optional
 
 import hydra
+from jammy.utils.debug import decorate_exception_hook
 from omegaconf import DictConfig
 from pytorch_lightning import (
     Callback,
@@ -17,6 +18,7 @@ from src.utils import utils
 log = utils.get_logger(__name__)
 
 
+@decorate_exception_hook
 def train(config: DictConfig) -> Optional[float]:
     """Contains training pipeline.
     Instantiates all PyTorch Lightning objects from config.
