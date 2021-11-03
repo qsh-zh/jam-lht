@@ -180,8 +180,9 @@ python run.py trainer.gpus=4 +trainer.num_nodes=2 +trainer.accelerator='ddp'
 <summary><b>Multi runs</b></summary>
 
 ```yaml
-python run.py -m trainer.gpus=1 +trainer.auto_select_gpus=true model.lr=1e-2,1e-3,1e-4
+python run.py -m trainer.gpus=1 +trainer.auto_select_gpus=true model.lr=1e-2,1e-3 trainer.max_epochs=2
 ```
+> Setting WANDB_START_METHOD=thread when use joblib, [see the issue](https://github.com/wandb/client/issues/1525)
 
 </details>
 
