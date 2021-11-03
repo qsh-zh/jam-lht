@@ -70,6 +70,7 @@ def train(config: DictConfig) -> Optional[float]:
     log.info(
         f"Instantiating trainer <{config.trainer._target_}>"  # pylint: disable=protected-access
     )
+    utils.auto_fgpu(config)
     trainer: Trainer = hydra.utils.instantiate(
         config.trainer, callbacks=callbacks, logger=logger, _convert_="partial"
     )

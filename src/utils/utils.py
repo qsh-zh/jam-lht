@@ -13,7 +13,7 @@ from pytorch_lightning.utilities import rank_zero_only
 def get_logger(name=__name__) -> logging.Logger:
     """Initializes multi-GPU-friendly python logger."""
 
-    logger = logging.getLogger(name)
+    _logger = logging.getLogger(name)
 
     # this ensures all logging levels get marked with the rank zero decorator
     # otherwise logs would get multiplied for each GPU process in multi-GPU setup
@@ -26,9 +26,12 @@ def get_logger(name=__name__) -> logging.Logger:
         "fatal",
         "critical",
     ):
-        setattr(logger, level, rank_zero_only(getattr(logger, level)))
+        setattr(_logger, level, rank_zero_only(getattr(_logger, level)))
 
-    return logger
+    return _logger
+
+
+g_logger = get_logger(__name__)
 
 
 def extras(config: DictConfig) -> None:
@@ -165,6 +168,21 @@ def log_hyperparameters(
     # this is just a trick to prevent trainer from logging hparams of model,
     # since we already did that above
     trainer.logger.log_hyperparams = empty
+
+
+def auto_fgpu(config: DictConfig):
+    # FIXME: only support one gpu, quick select
+    if config.fgpu:
+        if getattr(config.trainer, "gpus", 0) == 1:
+            from jammy.utils.gpu import select_gpu
+
+            best_id = select_gpu(mem_prior=0.1)
+            config.trainer.gpus = [
+                best_id,
+            ]
+            g_logger.warning(f"fgpu select device {best_id}")
+        elif int(getattr(config.trainer, "gpus", 0)) > 1:
+            g_logger.warning(f"fgpu only support gpus=1, but get {config.trainer.gpus}")
 
 
 def finish(  # pylint: disable= unused-argument

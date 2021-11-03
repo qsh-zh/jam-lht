@@ -48,3 +48,6 @@ seed: null
 
 # name of the run, accessed by loggers
 name: null
+
+# auto select gpu with lowest util rate
+fgpu: true
