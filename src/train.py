@@ -87,6 +87,9 @@ def train(config: DictConfig) -> Optional[float]:
         logger=logger,
     )
 
+    # reseed before training, encounter once after instantiation, randomness disappear
+    if config.get("seed"):
+        seed_everything(config.seed, workers=True)
     # Train the model
     log.info("Starting training!")
     trainer.fit(model=model, datamodule=datamodule)

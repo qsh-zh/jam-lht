@@ -27,7 +27,9 @@ trainer:
   # resume_from_checkpoint: ${work_dir}/last.ckpt
 
 model:
-  _target_: src.models.mnist_model.MNISTLitModel
+  # for fast prototyping!
+  module:
+    _target_: src.models.mnist_model.MNISTLitModel
   lr: 0.001
   weight_decay: 0.00005
   input_size: 784
