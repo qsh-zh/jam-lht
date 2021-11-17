@@ -11,7 +11,7 @@ from pytorch_lightning.utilities import rank_zero_only
 
 
 def get_logger(name=__name__) -> logging.Logger:
-    """Initializes multi-GPU-friendly python logger."""
+    """Initializes multi-GPU-friendly python command line logger."""
 
     _logger = logging.getLogger(name)
 
@@ -117,12 +117,8 @@ def print_config(
 
     rich.print(tree)
 
-    with open("config_tree.txt", "w", encoding="utf-8") as fp:
+    with open("config_tree.log", "w", encoding="utf-8") as fp:
         rich.print(tree, file=fp)
-
-
-def empty(*args, **kwargs):  # pylint: disable=unused-argument
-    pass
 
 
 @rank_zero_only
@@ -137,7 +133,7 @@ def log_hyperparameters(
     """This method controls which parameters from Hydra config are saved by Lightning loggers.
 
     Additionaly saves:
-        - number of trainable model parameters
+        - number of model parameters
     """
     del datamodule, callbacks, logger
 
@@ -147,27 +143,23 @@ def log_hyperparameters(
     hparams["trainer"] = config["trainer"]
     hparams["model"] = config["model"]
     hparams["datamodule"] = config["datamodule"]
+
     if "seed" in config:
         hparams["seed"] = config["seed"]
     if "callbacks" in config:
         hparams["callbacks"] = config["callbacks"]
 
     # save number of model parameters
-    hparams["model/params_total"] = sum(p.numel() for p in model.parameters())
-    hparams["model/params_trainable"] = sum(
+    hparams["model/params/total"] = sum(p.numel() for p in model.parameters())
+    hparams["model/params/trainable"] = sum(
         p.numel() for p in model.parameters() if p.requires_grad
     )
-    hparams["model/params_not_trainable"] = sum(
+    hparams["model/params/non_trainable"] = sum(
         p.numel() for p in model.parameters() if not p.requires_grad
     )
 
     # send hparams to all loggers
     trainer.logger.log_hyperparams(hparams)
-
-    # disable logging any more hyperparameters for all loggers
-    # this is just a trick to prevent trainer from logging hparams of model,
-    # since we already did that above
-    trainer.logger.log_hyperparams = empty
 
 
 def auto_fgpu(config: DictConfig):

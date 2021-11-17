@@ -46,7 +46,8 @@ test_after_training: false
 # seed for random number generators in pytorch, numpy and python.random
 seed: null
 
-# name of the run, accessed by loggers
+# name of the run is accessed by loggers
+# should be used along with experiment mode
 name: null
 
 # auto select gpu with lowest util rate

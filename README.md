@@ -4,11 +4,13 @@
 
 Modified based on [ashleve's v1.0 implementation](https://github.com/qsh-zh/jam-lht).
 
-<a href="https://www.python.org/"><img alt="Python" src="https://img.shields.io/badge/-Python 3.7--3.9-blue?style=for-the-badge&logo=python&logoColor=white"></a>
-<a href="https://pytorch.org/get-started/locally/"><img alt="PyTorch" src="https://img.shields.io/badge/-PyTorch 1.8+-ee4c2c?style=for-the-badge&logo=pytorch&logoColor=white"></a>
-<a href="https://pytorchlightning.ai/"><img alt="Lightning" src="https://img.shields.io/badge/-Lightning 1.3+-792ee5?style=for-the-badge&logo=pytorchlightning&logoColor=white"></a>
+<a href="https://www.python.org/"><img alt="Python" src="https://img.shields.io/badge/-Python 3.7+-blue?style=for-the-badge&logo=python&logoColor=white"></a>
+<a href="https://pytorch.org/get-started/locally/"><img alt="PyTorch" src="https://img.shields.io/badge/-PyTorch 1.10+-ee4c2c?style=for-the-badge&logo=pytorch&logoColor=white"></a>
+<a href="https://pytorchlightning.ai/"><img alt="Lightning" src="https://img.shields.io/badge/-Lightning 1.5+-792ee5?style=for-the-badge&logo=pytorchlightning&logoColor=white"></a>
 <a href="https://hydra.cc/"><img alt="Config: hydra" src="https://img.shields.io/badge/config-hydra 1.1-89b8cd?style=for-the-badge&labelColor=gray"></a>
 <a href="https://black.readthedocs.io/en/stable/"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-black.svg?style=for-the-badge&labelColor=gray"></a>
+
+
 <!-- <a href="https://hub.docker.com/r/ashlev/lightning-hydra"><img alt="Docker" src="https://img.shields.io/badge/docker-257bd6?style=for-the-badge&logo=docker&logoColor=white"></a> -->
 
 A clean and scalable template to kickstart your deep learning project 🚀⚡🔥<br>
@@ -25,27 +27,29 @@ to your `README.md`.
 -->
 
 ## 📌&nbsp;&nbsp;Introduction
+
 This template tries to be as general as possible - you can easily delete any unwanted features from the pipeline or rewire the configuration, by modifying behavior in [src/train.py](src/train.py).
 
 > Effective usage of this template requires learning of a couple of technologies: [PyTorch](https://pytorch.org), [PyTorch Lightning](https://www.pytorchlightning.ai) and [Hydra](https://hydra.cc). Knowledge of some experiment logging framework like [Weights&Biases](https://wandb.com), [Neptune](https://neptune.ai) or [MLFlow](https://mlflow.org) is also recommended.
 
 **Why you should use it:** it allows you to rapidly iterate over new models/datasets and scale your projects from small single experiments to hyperparameter searches on computing clusters, without writing any boilerplate code. To my knowledge, it's one of the most convenient all-in-one technology stack for Deep Learning research. Good starting point for reproducing papers, kaggle competitions or small-team research projects. It's also a collection of best practices for efficient workflow and reproducibility.
 
-**Why you shouldn't use it:** Lightning and Hydra are not yet mature, which means you might run into some bugs sooner or later. Also, even though Lightning is very flexible, it's not well suited for every possible deep learning task.
+**Why you shouldn't use it:** this template is not fitted to be a production environment, should be used more as a fast experimentation tool. Also, even though Lightning is very flexible, it's not well suited for every possible deep learning task. See [#Limitations](#limitations) for more.
 
 ### Why PyTorch Lightning?
+
 [PyTorch Lightning](https://github.com/PyTorchLightning/pytorch-lightning) is a lightweight PyTorch wrapper for high-performance AI research.
 It makes your code neatly organized and provides lots of useful features, like ability to run model on CPU, GPU, multi-GPU cluster and TPU.
 
-
 ### Why Hydra?
-[Hydra](https://github.com/facebookresearch/hydra) is an open-source Python framework that simplifies the development of research and other complex applications. The key feature is the ability to dynamically create a hierarchical configuration by composition and override it through config files and the command line. It  allows you to conveniently manage experiments and provides many useful plugins, like [Optuna Sweeper](https://hydra.cc/docs/next/plugins/optuna_sweeper) for hyperparameter search, or [Ray Launcher](https://hydra.cc/docs/next/plugins/ray_launcher) for running jobs on a cluster.
-<br>
-<br>
-<br>
 
+[Hydra](https://github.com/facebookresearch/hydra) is an open-source Python framework that simplifies the development of research and other complex applications. The key feature is the ability to dynamically create a hierarchical configuration by composition and override it through config files and the command line. It allows you to conveniently manage experiments and provides many useful plugins, like [Optuna Sweeper](https://hydra.cc/docs/next/plugins/optuna_sweeper) for hyperparameter search, or [Ray Launcher](https://hydra.cc/docs/next/plugins/ray_launcher) for running jobs on a cluster.
+<br>
+<br>
+<br>
 
 ## Main Ideas Of This Template
+
 - **Predefined Structure**: clean and scalable so that work can easily be extended and replicated (see [#Project Structure](#project-structure))
 - **Rapid Experimentation**: thanks to automating pipeline with config files and hydra command line superpowers (see [#Your Superpowers](#your-superpowers))
 - **Little Boilerplate**: so pipeline can be easily modified (see [src/train.py](src/train.py))
@@ -56,16 +60,17 @@ It makes your code neatly organized and provides lots of useful features, like a
 - **Logs**: all logs (checkpoints, data from loggers, chosen hparams, etc.) are stored in a convenient folder structure imposed by Hydra (see [#Logs](#logs))
 - **Hyperparameter Search**: made easier with Hydra built in plugins like [Optuna Sweeper](https://hydra.cc/docs/next/plugins/optuna_sweeper) (see [#Hyperparameter Search](#hyperparameter-search))
 - **Tests**: unit tests and command based tests (see [#Tests](#tests))
-- **Extra Features**: optional utilities to make your life easier (see [#Extra Features](#extra-features))
+- **Extra Features**: optional utilities to make your life easier
+<!-- - **Reproducibility**: ? -->
 - **Best Practices**: a couple of recommended tools, practices and standards for efficient workflow and reproducibility (see [#Best Practices](#best-practices))
-<br>
-
+  <br>
 
 ## Project Structure
+
 The directory structure of new project looks like this:
+
 ```
 ├── bash                    <- Bash scripts
-│   ├── setup_conda.sh          <- Setup conda environment
 │   └── schedule.sh             <- Schedule execution of many runs
 │
 ├── configs                 <- Hydra configuration files
@@ -73,8 +78,8 @@ The directory structure of new project looks like this:
 │   ├── datamodule              <- Datamodule configs
 │   ├── experiment              <- Experiment configs
 │   ├── hparams_search          <- Hyperparameter search configs
-│   ├── mode                    <- Running mode configs
 │   ├── logger                  <- Logger configs
+│   ├── mode                    <- Running mode configs
 │   ├── model                   <- Model configs
 │   ├── trainer                 <- Trainer configs
 │   │
@@ -110,17 +115,22 @@ The directory structure of new project looks like this:
 ├── requirements.txt        <- File for installing python dependencies
 └── README.md
 ```
+
 <br>
 
-
 ## 🚀&nbsp;&nbsp;Quickstart
+
 ```yaml
 # clone project
 git clone https://github.com/qsh-zh/jam-lht
 cd lightning-hydra-template
 
 # [OPTIONAL] create conda environment
-bash bash/setup_conda.sh
+conda create -n myenv python=3.8
+conda activate myenv
+
+# install pytorch according to instructions
+# https://pytorch.org/get-started/
 
 # install requirements
 pip install -r requirements.txt
@@ -128,6 +138,7 @@ pip install -r requirements.txt
 
 Template contains example with MNIST classification.<br>
 When running `python run.py` you should see something like this:
+
 <div align="center">
 
 ![](https://github.com/qsh-zh/jam-lht/blob/resources/terminal.png)
@@ -135,27 +146,31 @@ When running `python run.py` you should see something like this:
 </div>
 
 ### ⚡&nbsp;&nbsp;Your Superpowers
+
 (click to expand)
 
 <details>
 <summary><b>Override any config parameter from command line</b></summary>
 
 > Hydra allows you to easily overwrite any parameter defined in your config.
+
 ```yaml
 python run.py trainer.max_epochs=20 model.lr=1e-4
 ```
+
 > You can also add new parameters with `+` sign.
+
 ```yaml
 python run.py +model.new_param="uwu"
 ```
 
 </details>
 
-
 <details>
 <summary><b>Train on CPU, GPU, multi-GPU and TPU</b></summary>
 
 > PyTorch Lightning makes it easy to train your models on different hardware.
+
 ```yaml
 # train on CPU
 python run.py trainer.gpus=0
@@ -167,14 +182,13 @@ python run.py trainer.gpus=1
 python run.py +trainer.tpu_cores=8
 
 # train with DDP (Distributed Data Parallel) (4 GPUs)
-python run.py trainer.gpus=4 +trainer.accelerator='ddp'
+python run.py trainer.gpus=4 +trainer.accelerator=ddp
 
 # train with DDP (Distributed Data Parallel) (8 GPUs, 2 nodes)
-python run.py trainer.gpus=4 +trainer.num_nodes=2 +trainer.accelerator='ddp'
+python run.py trainer.gpus=4 +trainer.num_nodes=2 +trainer.accelerator=ddp
 ```
 
 </details>
-
 
 <details>
 <summary><b>Multi runs</b></summary>
@@ -190,28 +204,33 @@ python run.py -m trainer.gpus=1 +trainer.auto_select_gpus=true model.lr=1e-2,1e-
 <summary><b>Train with mixed precision</b></summary>
 
 ```yaml
-# train with mixed precision (Apex level O1)
-python run.py trainer.gpus=1 +trainer.amp_backend="apex" +trainer.precision=16 \
-+trainer.amp_level="O1"
-
-# train with mixed precision (Apex level O2)
-python run.py trainer.gpus=1 +trainer.amp_backend="apex" +trainer.precision=16 \
-+trainer.amp_level="O2"
+# train with pytorch native automatic mixed precision (AMP)
+python run.py trainer.gpus=1 +trainer.precision=16
 ```
 
 </details>
 
+<!-- deepspeed support still in beta
+<details>
+<summary><b>Optimize large scale models on multiple GPUs with Deepspeed</b></summary>
+
+```yaml
+python run.py +trainer.
+```
+
+</details>
+ -->
 
 <details>
-  <summary><b>Train model with any logger available in PyTorch Lightning, like Weights&Biases</b></summary>
+<summary><b>Train model with any logger available in PyTorch Lightning, like Weights&Biases or Tensorboard</b></summary>
 
-> PyTorch Lightning provides convenient integrations with most popular logging frameworks, like Tensorboard, Neptune or simple csv files. Read more [here](#experiment-tracking). Using wandb requires you to [setup account](https://www.wandb.com/) first. After that just complete the config as below.<br>
-**Click [here](https://wandb.ai/hobglob/template-dashboard/) to see example wandb dashboard generated with this template.**
+> PyTorch Lightning provides convenient integrations with most popular logging frameworks, like Tensorboard, Neptune or simple csv files. Read more [here](#experiment-tracking). Using wandb requires you to [setup account](https://www.wandb.com/) first. After that just complete the config as below.<br> > **Click [here](https://wandb.ai/hobglob/template-dashboard/) to see example wandb dashboard generated with this template.**
+
 ```yaml
 # set project and entity names in `configs/logger/wandb`
 wandb:
-    project: "your_project_name"
-    entity: "your_wandb_team_name"
+  project: "your_project_name"
+  entity: "your_wandb_team_name"
 ```
 
 ```yaml
@@ -220,7 +239,6 @@ python run.py logger=wandb
 ```
 
 </details>
-
 
 <details>
 <summary><b>Use different running modes</b></summary>
@@ -232,40 +250,40 @@ python run.py logger=wandb
 python run.py mode=debug
 
 # experiment mode changes logging folder to `logs/experiments/name_of_your_experiment/`
-# name is also used by experiment loggers (like tensorboard or wandb)
+# name is also used by loggers
 python run.py mode=exp name='my_new_experiment_253'
 ```
 
 </details>
 
-
 <details>
 <summary><b>Train model with chosen experiment config</b></summary>
 
 > Experiment configurations are placed in [configs/experiment/](configs/experiment/).
+
 ```yaml
 python run.py experiment=example_simple
 ```
 
 </details>
 
-
 <details>
 <summary><b>Attach some callbacks to run</b></summary>
 
 > Callbacks can be used for things such as as model checkpointing, early stopping and [many more](https://pytorch-lightning.readthedocs.io/en/latest/extensions/callbacks.html#built-in-callbacks).<br>
-Callbacks configurations are placed in [configs/callbacks/](configs/callbacks/).
+> Callbacks configurations are placed in [configs/callbacks/](configs/callbacks/).
+
 ```yaml
 python run.py callbacks=default
 ```
 
 </details>
 
-
 <details>
 <summary><b>Use different tricks available in Pytorch Lightning</b></summary>
 
 > PyTorch Lightning provides about [40+ useful trainer flags](https://pytorch-lightning.readthedocs.io/en/latest/common/trainer.html#trainer-flags).
+
 ```yaml
 # gradient clipping may be enabled to avoid exploding gradients
 python run.py +trainer.gradient_clip_val=0.5
@@ -285,23 +303,27 @@ python run.py +trainer.max_time="00:12:00:00"
 
 </details>
 
-
 <details>
 <summary><b>Easily debug</b></summary>
 
 ```yaml
+# run in debug mode
+# changes logging folder to `logs/debug/...`
+# enables trainer debugging options specified in `configs/trainer/debug.yaml`
+# sets level of all command line loggers to 'DEBUG'
+python run.py mode=debug
+
+# enable trainer debugging options specified in `configs/trainer/debug.yaml`
+python run.py trainer=debug
+
 # run 1 train, val and test loop, using only 1 batch
 python run.py +trainer.fast_dev_run=true
 
+# raise exception if there are any numerical anomalies in tensors, like NaN or +/-inf
+python run.py +trainer.detect_anomaly=true
+
 # print full weight summary of all PyTorch modules
 python run.py trainer.weights_summary="full"
-
-# raise exception, if any of the parameters or the loss are NaN or +/-inf
-python run.py +trainer.terminate_on_nan=true
-
-# quick debug with all the previous options enabled
-# (this is also enabled when using `python run.py mode=debug`)
-python run.py trainer=debug
 
 # print execution time profiling after training ends
 python run.py +trainer.profiler="simple"
@@ -319,18 +341,18 @@ python run.py +trainer.track_grad_norm=2
 
 </details>
 
-
 <details>
 <summary><b>Resume training from checkpoint</b></summary>
 
 > Checkpoint can be either path or URL. Path should be absolute!
+
 ```yaml
 python run.py +trainer.resume_from_checkpoint="/absolute/path/to/ckpt/name.ckpt"
 ```
+
 > ⚠️ Currently loading ckpt in Lightning doesn't resume logger experiment, but it will be supported in future Lightning release.
 
 </details>
-
 
 <details>
 <summary><b>Create a sweep over hyperparameters</b></summary>
@@ -340,20 +362,23 @@ python run.py +trainer.resume_from_checkpoint="/absolute/path/to/ckpt/name.ckpt"
 # each with different combination of batch_size and learning rate
 python run.py -m datamodule.batch_size=32,64,128 model.lr=0.001,0.0005
 ```
-> ⚠️ Currently sweeps aren't failure resistant (if one job crashes than the whole sweep crashes), but it will be supported in future Hydra release.
+
+> ⚠️ This sweep is not failure resistant (if one job crashes than the whole sweep crashes).
 
 </details>
-
 
 <details>
 <summary><b>Create a sweep over hyperparameters with Optuna</b></summary>
 
 > Using [Optuna Sweeper](https://hydra.cc/docs/next/plugins/optuna_sweeper) plugin doesn't require you to code any boilerplate into your pipeline, everything is defined in a [single config file](configs/hparams_search/mnist_optuna.yaml)!
+
 ```yaml
 # this will run hyperparameter search defined in `configs/hparams_search/mnist_optuna.yaml`
 # over chosen experiment config
 python run.py -m hparams_search=mnist_optuna experiment=example_simple
 ```
+
+> ⚠️ Currently this sweep is not failure resistant (if one job crashes than the whole sweep crashes). Might be supported in future Hydra release.
 
 </details>
 
@@ -361,6 +386,7 @@ python run.py -m hparams_search=mnist_optuna experiment=example_simple
 <summary><b>Execute all experiments from folder</b></summary>
 
 > Hydra provides special syntax for controlling behavior of multiruns. Learn more [here](https://hydra.cc/docs/next/tutorials/basic/running_your_app/multi-run). The command below executes all experiments from folder [configs/experiment/](configs/experiment/).
+
 ```yaml
 python run.py -m 'experiment=glob(*)'
 ```
@@ -381,7 +407,6 @@ python run.py -m 'experiment=glob(*)'
 
 </details> -->
 
-
 <details>
 <summary><b>Use Hydra tab completion</b></summary>
 
@@ -390,41 +415,43 @@ python run.py -m 'experiment=glob(*)'
 </details>
 <br>
 
-
 ## 🐳&nbsp;&nbsp;Docker
-First you will need to [install Nvidia Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html) to enable GPU  support. <br>
+
+First you will need to [install Nvidia Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html) to enable GPU support. <br>
 
 The template Dockerfile is provided on branch [`dockerfiles`](https://github.com/qsh-zh/jam-lht/tree/dockerfiles). Copy it to the template root folder.
 
 To build the container use:
+
 ```bash
 docker build -t <project_name> .
 ```
+
 To mount the project to the container use:
+
 ```bash
 docker run -v $(pwd):/workspace/project --gpus all -it --rm <project_name>
 ```
-Uncomment Apex in Dockerfile for mixed-precision support.
-<br><br><br>
 
-
+<br><br>
 
 ## ❤️&nbsp;&nbsp;Contributions
+
 Have a question? Found a bug? Missing a specific feature? Ran into a problem? Feel free to file a new issue or PR with respective title and description. If you already found a solution to your problem, don't hesitate to share it. Suggestions for new best practices and tricks are always welcome!
 <br><br><br><br>
-
-
 
 ## ℹ️&nbsp;&nbsp;Guide
 
 ### How To Get Started
+
 - First, you should probably get familiar with [PyTorch Lightning](https://www.pytorchlightning.ai)
 - Next, go through [Hydra quick start guide](https://hydra.cc/docs/intro/) and [basic Hydra tutorial](https://hydra.cc/docs/tutorials/basic/your_first_app/simple_cli/)
-<br>
-
+  <br>
 
 ### How it works
+
 By design, every run is initialized by [run.py](run.py) file. All PyTorch Lightning modules are dynamically instantiated from module paths specified in config. Example model config:
+
 ```yaml
 _target_: src.models.mnist_model.MNISTLitModel
 input_size: 784
@@ -434,54 +461,54 @@ lin3_size: 256
 output_size: 10
 lr: 0.001
 ```
+
 Using this config we can instantiate the object with the following line:
+
 ```python
 model = hydra.utils.instantiate(config.model)
 ```
+
 This allows you to easily iterate over new models!<br>
 Every time you create a new one, just specify its module path and parameters in appriopriate config file. <br>
 The whole pipeline managing the instantiation logic is placed in [src/train.py](src/train.py).
 
 <br>
 
-
 ### Main Project Configuration
+
 Location: [configs/config.yaml](configs/config.yaml)<br>
 Main project config contains default training configuration.<br>
 It determines how config is composed when simply executing command `python run.py`.<br>
 It also specifies everything that shouldn't be managed by experiment configurations.
+
 <details>
 <summary><b>Show main project configuration</b></summary>
 
 ```yaml
 # specify here default training configuration
 defaults:
-    - trainer: default.yaml
-    - model: mnist_model.yaml
-    - datamodule: mnist_datamodule.yaml
-    - callbacks: default.yaml  # set this to null if you don't want to use callbacks
-    - logger: null  # set logger here or use command line (e.g. `python run.py logger=wandb`)
+  - trainer: default.yaml
+  - model: mnist_model.yaml
+  - datamodule: mnist_datamodule.yaml
+  - callbacks: default.yaml # set this to null if you don't want to use callbacks
+  - logger: null # set logger here or use command line (e.g. `python run.py logger=wandb`)
 
-    - mode: default.yaml
+  - mode: default.yaml
 
-    - experiment: null
-    - hparams_search: null
-
+  - experiment: null
+  - hparams_search: null
 
 # path to original working directory
 # hydra hijacks working directory by changing it to the current log directory,
 # so it's useful to have this path as a special variable
-# learn more here: https://hydra.cc/docs/next/tutorials/basic/running_your_app/working_directory
+# https://hydra.cc/docs/next/tutorials/basic/running_your_app/working_directory
 work_dir: ${hydra:runtime.cwd}
-
 
 # path to folder with data
 data_dir: ${work_dir}/data/
 
-
 # pretty print config at the start of the run using Rich library
 print_config: True
-
 
 # disable python warnings if they annoy you
 ignore_warnings: True
@@ -490,45 +517,50 @@ ignore_warnings: True
 </details>
 <br>
 
-
 ### Experiment Configuration
+
 Location: [configs/experiment](configs/experiment)<br>
 You should store all your experiment configurations in this folder.<br>
 Experiment configurations allow you to overwrite parameters from main project configuration.
 
 **Simple example**
+
 ```yaml
 # to execute this experiment run:
 # python run.py experiment=example_simple
 
 defaults:
-    - override /trainer: default.yaml
-    - override /model: mnist_model.yaml
-    - override /datamodule: mnist_datamodule.yaml
-    - override /callbacks: default.yaml
-    - override /logger: null
+  - override /mode: exp.yaml
+  - override /trainer: default.yaml
+  - override /model: mnist_model.yaml
+  - override /datamodule: mnist_datamodule.yaml
+  - override /callbacks: default.yaml
+  - override /logger: null
 
 # all parameters below will be merged with parameters from default configurations set above
 # this allows you to overwrite only specified parameters
 
+# name of the run determines folder name in logs and is accessed by loggers
+name: "example_simple"
+
 seed: 12345
 
 trainer:
-    max_epochs: 10
-    gradient_clip_val: 0.5
+  max_epochs: 10
+  gradient_clip_val: 0.5
 
 model:
-    lin1_size: 128
-    lin2_size: 256
-    lin3_size: 64
-    lr: 0.005
+  lin1_size: 128
+  lin2_size: 256
+  lin3_size: 64
+  lr: 0.005
 
 datamodule:
-    train_val_test_split: [55_000, 5_000, 10_000]
-    batch_size: 64
+  train_val_test_split: [55_000, 5_000, 10_000]
+  batch_size: 64
 ```
-</details>
 
+</details>
 
 <details>
 <summary><b>Show advanced example</b></summary>
@@ -538,49 +570,53 @@ datamodule:
 # python run.py experiment=example_full
 
 defaults:
-    - override /trainer: null
-    - override /model: null
-    - override /datamodule: null
-    - override /callbacks: null
-    - override /logger: null
+  - override /mode: exp.yaml
+  - override /trainer: null
+  - override /model: null
+  - override /datamodule: null
+  - override /callbacks: null
+  - override /logger: null
 
 # we override default configurations with nulls to prevent them from loading at all
 # instead we define all modules and their paths directly in this config,
 # so everything is stored in one place
 
+name: "example_full"
+
 seed: 12345
 
 trainer:
-    _target_: pytorch_lightning.Trainer
-    gpus: 0
-    min_epochs: 1
-    max_epochs: 10
-    gradient_clip_val: 0.5
+  _target_: pytorch_lightning.Trainer
+  gpus: 0
+  min_epochs: 1
+  max_epochs: 10
+  gradient_clip_val: 0.5
 
 model:
-    _target_: src.models.mnist_model.MNISTLitModel
-    lr: 0.001
-    weight_decay: 0.00005
-    input_size: 784
-    lin1_size: 256
-    lin2_size: 256
-    lin3_size: 128
-    output_size: 10
+  _target_: src.models.mnist_model.MNISTLitModel
+  lr: 0.001
+  weight_decay: 0.00005
+  input_size: 784
+  lin1_size: 256
+  lin2_size: 256
+  lin3_size: 128
+  output_size: 10
 
 datamodule:
-    _target_: src.datamodules.mnist_datamodule.MNISTDataModule
-    data_dir: ${data_dir}
-    train_val_test_split: [55_000, 5_000, 10_000]
-    batch_size: 64
-    num_workers: 0
-    pin_memory: False
+  _target_: src.datamodules.mnist_datamodule.MNISTDataModule
+  data_dir: ${data_dir}
+  train_val_test_split: [55_000, 5_000, 10_000]
+  batch_size: 64
+  num_workers: 0
+  pin_memory: False
 
 logger:
-    wandb:
-        _target_: pytorch_lightning.loggers.wandb.WandbLogger
-        project: "lightning-hydra-template"
-        tags: ["best_model", "uwu"]
-        notes: "Description of this model."
+  wandb:
+    _target_: pytorch_lightning.loggers.wandb.WandbLogger
+    project: "lightning-hydra-template"
+    name: ${name}
+    tags: ["best_model", "mnist"]
+    notes: "Description of this model."
 ```
 
 </details>
@@ -588,37 +624,53 @@ logger:
 <br>
 
 ### Workflow
+
 1. Write your PyTorch Lightning model (see [mnist_model.py](src/models/mnist_model.py) for example)
 2. Write your PyTorch Lightning datamodule (see [mnist_datamodule.py](src/datamodules/mnist_datamodule.py) for example)
 3. Write your experiment config, containing paths to your model and datamodule
 4. Run training with chosen experiment config: `python run.py experiment=experiment_name`
+
 <br>
 
 ### Logs
-Hydra creates new working directory for every executed run. <br>
+
+**Hydra creates new working directory for every executed run.** <br>
 By default, logs have the following structure:
+
 ```
 │
 ├── logs
-│   ├── runs                    # Folder for logs generated from single runs
-│   │   ├── 2021-02-15              # Date of executing run
-│   │   │   ├── 16-50-49                # Hour of executing run
+│   ├── experiments             # Folder for logs generated by experiments
+│   │   ├── experiment_name         # Name of the experiment
+│   │   │   ├── 2021-02-15_16-50-49     # Date of execution
 │   │   │   │   ├── .hydra                  # Hydra logs
 │   │   │   │   ├── wandb                   # Weights&Biases logs
 │   │   │   │   ├── checkpoints             # Training checkpoints
 │   │   │   │   └── ...                     # Any other thing saved during training
+│   │   │   └── ...
+│   │   ├── ...
+│   │   └── ...
+│   │
+│   ├── debugs                  # Folder for logs generated during debugging
+│   │   ├── 2021-02-15
+│   │   │   ├── 16-50-49
+│   │   │   └── ...
+│   │   ├── ...
+│   │   └── ...
+│   │
+│   ├── runs                    # Folder for logs generated by normal runs
+│   │   ├── 2021-02-15
+│   │   │   ├── 16-50-49
+│   │   │   │   └── ...
 │   │   │   ├── ...
 │   │   │   └── ...
 │   │   ├── ...
 │   │   └── ...
 │   │
-│   └── multiruns               # Folder for logs generated from multiruns (sweeps)
-│       ├── 2021-02-15_16-50-49     # Date and hour of executing sweep
-│       │   ├── 0                       # Job number
-│       │   │   ├── .hydra                  # Hydra logs
-│       │   │   ├── wandb                   # Weights&Biases logs
-│       │   │   ├── checkpoints             # Training checkpoints
-│       │   │   └── ...                     # Any other thing saved during training
+│   └── multiruns               # Folder for logs generated by multiruns (sweeps)
+│       ├── 2021-02-15_16-50-49
+│       │   ├── 0
+│       │   │   └── ...
 │       │   ├── 1
 │       │   ├── 2
 │       │   └── ...
@@ -630,84 +682,86 @@ By default, logs have the following structure:
 You can change this structure by modifying paths in [hydra configuration](configs/mode).
 <br><br>
 
-
 ### Experiment Tracking
+
 PyTorch Lightning supports the most popular logging frameworks:<br>
 **[Weights&Biases](https://www.wandb.com/) · [Neptune](https://neptune.ai/) · [Comet](https://www.comet.ml/) · [MLFlow](https://mlflow.org) · [Tensorboard](https://www.tensorflow.org/tensorboard/)**
 
 These tools help you keep track of hyperparameters and output metrics and allow you to compare and visualize results. To use one of them simply complete its configuration in [configs/logger](configs/logger) and run:
- ```yaml
- python run.py logger=logger_name
- ```
-You can use many of them at once (see [configs/logger/many_loggers.yaml](configs/logger/many_loggers.yaml) for example).<br>
-You can also write your own logger.<br>
+
+```yaml
+python run.py logger=logger_name
+```
+
+You can use many of them at once (see [configs/logger/many_loggers.yaml](configs/logger/many_loggers.yaml) for example).
+
+You can also write your own logger.
+
 Lightning provides convenient method for logging custom metrics from inside LightningModule. Read the docs [here](https://pytorch-lightning.readthedocs.io/en/latest/extensions/logging.html#automatic-logging) or take a look at [MNIST example](src/models/mnist_model.py).
 <br><br>
 
-
-
 ### Hyperparameter Search
+
 Defining hyperparameter optimization is as easy as adding new config file to [configs/hparams_search](configs/hparams_search).
+
 <details>
 <summary><b>Show example</b></summary>
 
 ```yaml
 defaults:
-    - override /hydra/sweeper: optuna
-
+  - override /hydra/sweeper: optuna
 
 # choose metric which will be optimized by Optuna
-optimized_metric: "val/acc"
-
+optimized_metric: "val/acc_best"
 
 hydra:
-    # here we define Optuna hyperparameter search
-    # it optimizes for value returned from function with @hydra.main decorator
-    # learn more here: https://hydra.cc/docs/next/plugins/optuna_sweeper
-    sweeper:
-        _target_: hydra_plugins.hydra_optuna_sweeper.optuna_sweeper.OptunaSweeper
-        storage: null
-        study_name: null
-        n_jobs: 1
+  # here we define Optuna hyperparameter search
+  # it optimizes for value returned from function with @hydra.main decorator
+  # learn more here: https://hydra.cc/docs/next/plugins/optuna_sweeper
+  sweeper:
+    _target_: hydra_plugins.hydra_optuna_sweeper.optuna_sweeper.OptunaSweeper
+    storage: null
+    study_name: null
+    n_jobs: 1
 
-        # 'minimize' or 'maximize' the objective
-        direction: maximize
+    # 'minimize' or 'maximize' the objective
+    direction: maximize
 
-        # number of experiments that will be executed
-        n_trials: 20
+    # number of experiments that will be executed
+    n_trials: 20
 
-        # choose Optuna hyperparameter sampler
-        # learn more here: https://optuna.readthedocs.io/en/stable/reference/samplers.html
-        sampler:
-            _target_: optuna.samplers.TPESampler
-            seed: 12345
-            consider_prior: true
-            prior_weight: 1.0
-            consider_magic_clip: true
-            consider_endpoints: false
-            n_startup_trials: 10
-            n_ei_candidates: 24
-            multivariate: false
-            warn_independent_sampling: true
+    # choose Optuna hyperparameter sampler
+    # learn more here: https://optuna.readthedocs.io/en/stable/reference/samplers.html
+    sampler:
+      _target_: optuna.samplers.TPESampler
+      seed: 12345
+      consider_prior: true
+      prior_weight: 1.0
+      consider_magic_clip: true
+      consider_endpoints: false
+      n_startup_trials: 10
+      n_ei_candidates: 24
+      multivariate: false
+      warn_independent_sampling: true
 
-        # define range of hyperparameters
-        search_space:
-            datamodule.batch_size:
-                type: categorical
-                choices: [32, 64, 128]
-            model.lr:
-                type: float
-                low: 0.0001
-                high: 0.2
-            model.lin1_size:
-                type: categorical
-                choices: [32, 64, 128, 256, 512]
-            model.lin2_size:
-                type: categorical
-                choices: [32, 64, 128, 256, 512]
-            model.lin3_size:
-                type: categorical
-                choices: [32, 64, 128, 256, 512]
+    # define range of hyperparameters
+    search_space:
+      datamodule.batch_size:
+        type: categorical
+        choices: [32, 64, 128]
+      model.lr:
+        type: float
+        low: 0.0001
+        high: 0.2
+      model.lin1_size:
+        type: categorical
+        choices: [32, 64, 128, 256, 512]
+      model.lin2_size:
+        type: categorical
+        choices: [32, 64, 128, 256, 512]
+      model.lin3_size:
+        type: categorical
+        choices: [32, 64, 128, 256, 512]
 ```
 
 </details>
@@ -716,10 +770,10 @@ Next, you can execute it with: `python run.py -m hparams_search=mnist_optuna`<br
 Using this approach doesn't require you to add any boilerplate into your pipeline, everything is defined in a single config file. You can use different optimization frameworks integrated with Hydra, like Optuna, Ax or Nevergrad. The `optimization_results.yaml` will be available under `logs/multirun` folder.
 <br><br>
 
-
-
 ### Inference
+
 The following is example of loading model from checkpoint and running predictions.<br>
+
 <details>
 <summary><b>Show inference example</b></summary>
 
@@ -779,11 +833,11 @@ if __name__ == "__main__":
 </details>
 <br>
 
-
-
 ### Tests
+
 Template comes with example tests implemented with pytest library. <br>
 To execute them simply run:
+
 ```yaml
 # run all tests
 pytest
@@ -794,26 +848,29 @@ pytest tests/shell/test_basic_commands.py
 # run all tests except the ones marked as slow
 pytest -k "not slow"
 ```
+
 I often find myself running into bugs that come out only in edge cases or on some specific hardware/environment. To speed up the development, I usually constantly execute tests that run a couple of quick 1 epoch experiments, like overfitting to 10 batches, training on 25% of data, etc. Those kind of tests don't check for any specific output - they exist to simply verify that executing some commands doesn't end up in throwing exceptions. You can find them implemented in [tests/shell](tests/shell) folder.
 
 You can easily modify the commands in the scripts for your use case. If even 1 epoch is too much for your model, then you can make it run for a couple of batches instead (by using the right trainer flags).
 <br><br>
 
-
-
 ### Callbacks
+
 Template contains example callbacks enabling better Weights&Biases integration, which you can use as a reference for writing your own callbacks (see [wandb_callbacks.py](src/callbacks/wandb_callbacks.py)).<br>
 To support reproducibility:
+
 - **WatchModel**
 - **UploadCodeAsArtifact**
 - **UploadCheckpointsAsArtifact**
 
 To provide examples of logging custom visualisations with callbacks only:
+
 - **LogConfusionMatrix**
 - **LogF1PrecRecHeatmap**
 - **LogImagePredictions**
 
 To try all of the callbacks at once, use:
+
 ```yaml
 python run.py logger=wandb callbacks=wandb
 ```
@@ -821,30 +878,168 @@ python run.py logger=wandb callbacks=wandb
 To see the result of all the callbacks attached, take a look at [this experiment dashboard](https://wandb.ai/hobglob/template-tests/runs/3rw7q70h).
 <br><br>
 
-
-
 ### Multi-GPU Training
+
 Lightning supports multiple ways of doing distributed training.<br>
 The most common one is DDP, which spawns separate process for each GPU and averages gradients between them. To learn about other approaches read [lightning docs](https://pytorch-lightning.readthedocs.io/en/latest/advanced/multi_gpu.html).
 
 You can run DDP on mnist example with 4 GPUs like this:
+
 ```yaml
 python run.py trainer.gpus=4 +trainer.accelerator="ddp"
 ```
+
 ⚠️ When using DDP you have to be careful how you write your models - learn more [here](https://pytorch-lightning.readthedocs.io/en/latest/advanced/multi_gpu.html).
 <br><br>
 
-
+<!--
 ### Reproducibility
+
 To reproduce previous experiment, simply load its config from logs:
+
 ```yaml
 python run.py --config-path /logs/runs/.../.hydra/ --config-name config.yaml
 ```
+
 The `config.yaml` from `.hydra` folder contains all overriden parameters and sections.
+<br><br><br>
+-->
+
+### Limitations
+
+- Currently, template doesn't support k-fold cross validation, but it's possible to achieve it with Lightning Loop interface. See the [official example](https://github.com/PyTorchLightning/pytorch-lightning/blob/master/pl_examples/loop_examples/kfold.py). Implementing it requires rewriting the training pipeline.
+- Pytorch Lightning might not the best choice for scalable reinforcement learning, it's probably better to use something like [Ray](https://github.com/ray-project/ray).
+- Currently hyperparameter search with Hydra Optuna Plugin doesn't support prunning.
+
 <br><br>
 
+## Useful Tricks
+
+<details>
+<summary><b>Accessing datamodule attributes in model</b></summary>
+
+1. The simplest way is to pass datamodule attribute directly to model on initialization:
+
+   ```python
+   # ./src/train.py
+   datamodule = hydra.utils.instantiate(config.datamodule)
+   model = hydra.utils.instantiate(config.model, some_param=datamodule.some_param)
+   ```
+
+   This is not a very robust solution, since it assumes all your datamodules have `some_param` attribute available (otherwise the run will crash).
+
+2. If you only want to access datamodule config, you can simply pass it as an init parameter:
+
+   ```python
+   # ./src/train.py
+   model = hydra.utils.instantiate(config.model, dm_conf=config.datamodule)
+   ```
+
+   Now you can access any datamodule config part like this:
+
+   ```python
+   # ./src/models/my_model.py
+   class MyLitModel(LightningModule):
+   	def __init__(self, dm_conf, param1, param2):
+   		super().__init__()
+
+   		batch_size = dm_conf.batch_size
+   ```
+
+3. If you need to access the datamodule object attributes, a little hacky solution is to add Omegaconf resolver to your datamodule:
+
+   ```python
+   # ./src/datamodules/my_datamodule.py
+   from omegaconf import OmegaConf
+
+   class MyDataModule(LightningDataModule):
+   	def __init__(self, param1, param2):
+   		super().__init__()
+
+   		self.param1 = param1
+
+   		resolver_name = "datamodule"
+   		OmegaConf.register_new_resolver(
+   			resolver_name,
+   			lambda name: getattr(self, name),
+   			use_cache=False
+   		)
+   ```
+
+   This way you can reference any datamodule attribute from your config like this:
+
+   ```yaml
+   # this will return attribute 'param1' from datamodule object
+   param1: ${datamodule: param1}
+   ```
+
+   When later accessing this field, say in your lightning model, it will get automatically resolved based on all resolvers that are registered. Remember not to access this field before datamodule is initialized or it will crash. **You also need to set `resolve=False` in `print_config()` in [run.py](run.py) or it will throw errors:**
+
+   ```python
+   # ./src/run.py
+   utils.print_config(config, resolve=False)
+   ```
+
+</details>
+
+<details>
+<summary><b>Automatic activation of virtual environment and tab completion when entering folder</b></summary>
+
+1. Create a new file called `.autoenv` (this name is excluded from version control in `.gitignore`). <br>
+   You can use it to automatically execute shell commands when entering folder. Add some commands to your `.autoenv` file, like in the example below:
+
+   ```bash
+   # activate conda environment
+   conda activate myenv
+
+   # activate hydra tab completion for bash
+   eval "$(python run.py -sc install=bash)"
+
+   # enable aliases for debugging
+   alias debug='python run.py mode=debug'
+   alias debug2='python run.py mode=debug trainer.fast_dev_run=false trainer.max_epochs=1 trainer.gpus=0'
+   alias debug3='python run.py mode=debug trainer.fast_dev_run=false trainer.max_epochs=1 trainer.gpus=1'
+   alias debug_wandb='python run.py mode=debug trainer.fast_dev_run=false trainer.max_epochs=1 trainer.gpus=1 logger=wandb logger.wandb.project=tests'
+   ```
+
+   (these commands will be executed whenever you're openning or switching terminal to folder containing `.autoenv` file)
+
+2. To setup this automation for bash, execute the following line (it will append your `.bashrc` file):
+
+   ```bash
+   echo "autoenv() { if [ -x .autoenv ]; then source .autoenv ; echo '.autoenv executed' ; fi } ; cd() { builtin cd \"\$@\" ; autoenv ; } ; autoenv" >> ~/.bashrc
+   ```
+
+3. Lastly add execution previliges to your `.autoenv` file:
+
+   ```
+   chmod +x .autoenv
+   ```
+
+   (for safety, only `.autoenv` with previligies will be executed)
+
+**Explanation**
+
+The mentioned line appends your `.bashrc` file with 2 commands:
+
+1. `autoenv() { if [ -x .autoenv ]; then source .autoenv ; echo '.autoenv executed' ; fi }` - this declares the `autoenv()` function, which executes `.autoenv` file if it exists in current work dir and has execution previligies
+2. `cd() { builtin cd \"\$@\" ; autoenv ; } ; autoenv` - this extends behaviour of `cd` command, to make it execute `autoenv()` function each time you change folder in terminal or open new terminal
+
+</details>
+
+<!--
+<details>
+<summary><b>Making sweeps failure resistant</b></summary>
+
+TODO
+
+</details>
+ -->
+
+<br>
 
 ## Best Practices
+
 <!--<details>
 <summary><b>Use Docker</b></summary>
 
@@ -858,11 +1053,14 @@ Docker makes it easy to initialize the whole training environment, e.g. when you
 Use miniconda for your python environments (it's usually unnecessary to install full anaconda environment, miniconda should be enough).
 It makes it easier to install some dependencies, like cudatoolkit for GPU support.<br>
 Example installation:
+
 ```yaml
 wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 bash Miniconda3-latest-Linux-x86_64.sh
 ```
+
 Create environment using bash script provided in the template:
+
 ```yaml
 bash bash/setup_conda.sh
 ```
@@ -874,17 +1072,22 @@ bash bash/setup_conda.sh
 
 Use pre-commit hooks to standardize code formatting of your project and save mental energy.<br>
 Simply install pre-commit package with:
+
 ```yaml
 pip install pre-commit
 ```
+
 Next, install hooks from [.pre-commit-config.yaml](.pre-commit-config.yaml):
+
 ```yaml
 pre-commit install
 ```
+
 After that your code will be automatically reformatted on every new commit.<br>
 Currently template contains configurations of **black** (python code formatting), **isort** (python import sorting), **flake8** (python code analysis) and **prettier** (yaml formating). <br>
 
 To reformat all files in the project use command:
+
 ```yaml
 pre-commit run -a
 ```
@@ -898,12 +1101,15 @@ System specific variables (e.g. absolute paths to datasets) should not be under 
 
 Template contains `.env.example` file, which serves as an example. Create a new file called `.env` (this name is excluded from version control in .gitignore).
 You should use it for storing environment variables like this:
+
 ```yaml
 MY_VAR=/home/user/my_system_path
 ```
+
 All variables from `.env` are loaded in `run.py` automatically.
 
 Hydra allows you to reference any env variable in `.yaml` configs like this:
+
 ```yaml
 path_to_data: ${oc.env:MY_VAR}
 ```
@@ -914,9 +1120,11 @@ path_to_data: ${oc.env:MY_VAR}
 <summary><b>Name metrics using '/' character</b></summary>
 
 Depending on which logger you're using, it's often useful to define metric name with `/` character:
+
 ```python
 self.log("train/loss", loss)
 ```
+
 This way loggers will treat your metrics as belonging to different sections, which helps to get them organised in UI.
 
 </details>
@@ -927,6 +1135,7 @@ This way loggers will treat your metrics as belonging to different sections, whi
 Use official [torchmetrics](https://github.com/PytorchLightning/metrics) library to ensure proper calculation of metrics. This is especially important for multi-GPU training!
 
 For example, instead of calculating accuracy by yourself, you should use the provided `Accuracy` class like this:
+
 ```python
 from torchmetrics.classification.accuracy import Accuracy
 
@@ -948,6 +1157,7 @@ class LitModel(LightningModule):
         self.log("val/acc", acc)
         ...
 ```
+
 Make sure to use different metric instance for each step to ensure proper value reduction over all GPU processes.
 
 Torchmetrics provides metrics for most use cases, like F1 score or confusion matrix. Read [documentation](https://torchmetrics.readthedocs.io/en/latest/#more-reading) for more.
@@ -960,54 +1170,56 @@ Torchmetrics provides metrics for most use cases, like F1 score or confusion mat
 The style guide is available [here](https://pytorch-lightning.readthedocs.io/en/latest/starter/style_guide.html).<br>
 
 1. Be explicit in your init. Try to define all the relevant defaults so that the user doesn’t have to guess. Provide type hints. This way your module is reusable across projects!
-    ```python
-    class LitModel(LightningModule):
-        def __init__(self, layer_size: int = 256, lr: float = 0.001):
-    ```
+
+   ```python
+   class LitModel(LightningModule):
+       def __init__(self, layer_size: int = 256, lr: float = 0.001):
+   ```
 
 2. Preserve the recommended method order.
-    ```python
-    class LitModel(LightningModule):
 
-        def __init__():
-            ...
+   ```python
+   class LitModel(LightningModule):
 
-        def forward():
-            ...
+       def __init__():
+           ...
 
-        def training_step():
-            ...
+       def forward():
+           ...
 
-        def training_step_end():
-            ...
+       def training_step():
+           ...
 
-        def training_epoch_end():
-            ...
+       def training_step_end():
+           ...
 
-        def validation_step():
-            ...
+       def training_epoch_end():
+           ...
 
-        def validation_step_end():
-            ...
+       def validation_step():
+           ...
 
-        def validation_epoch_end():
-            ...
+       def validation_step_end():
+           ...
 
-        def test_step():
-            ...
+       def validation_epoch_end():
+           ...
 
-        def test_step_end():
-            ...
+       def test_step():
+           ...
 
-        def test_epoch_end():
-            ...
+       def test_step_end():
+           ...
 
-        def configure_optimizers():
-            ...
+       def test_epoch_end():
+           ...
 
-        def any_extra_hook():
-            ...
-    ```
+       def configure_optimizers():
+           ...
+
+       def any_extra_hook():
+           ...
+   ```
 
 </details>
 
@@ -1016,14 +1228,19 @@ The style guide is available [here](https://pytorch-lightning.readthedocs.io/en/
 
 Use [DVC](https://dvc.org) to version control big files, like your data or trained ML models.<br>
 To initialize the dvc repository:
+
 ```yaml
 dvc init
 ```
+
 To start tracking a file or directory, use `dvc add`:
+
 ```yaml
 dvc add data/MNIST
 ```
+
 DVC stores information about the added file (or a directory) in a special .dvc file named data/MNIST.dvc, a small text file with a human-readable format. This file can be easily versioned like source code with Git, as a placeholder for the original data:
+
 ```yaml
 git add data/MNIST.dvc data/.gitignore
 git commit -m "Add raw data"
@@ -1036,30 +1253,41 @@ git commit -m "Add raw data"
 
 It allows other people to easily use your modules in their own projects.
 Change name of the `src` folder to your project name and add `setup.py` file:
+
 ```python
 from setuptools import find_packages, setup
 
+
 setup(
-    name="src",  # you should change "src" to your project name
+    name="src",  # change "src" folder name to your project name
     version="0.0.0",
     description="Describe Your Cool Project",
-    author="",
-    author_email="",
-    # replace with your own github project link
-    url="https://github.com/qsh-zh/jam-lht",
-    install_requires=["pytorch-lightning>=1.2.0", "hydra-core>=1.0.6"],
+    author="...",
+    author_email="...",
+    url="https://github.com/qsh-zh/jam-lht",  # replace with your own github project link
+    install_requires=[
+        "pytorch>=1.10.0",
+        "pytorch-lightning>=1.4.0",
+        "hydra-core>=1.1.0",
+    ],
     packages=find_packages(),
 )
 ```
+
 Now your project can be installed from local files:
+
 ```yaml
 pip install -e .
 ```
+
 Or directly from git repository:
+
 ```yaml
 pip install git+git://github.com/YourGithubName/your-repo-name.git --upgrade
 ```
+
 So any file can be easily imported into any other file like so:
+
 ```python
 from project_name.models.mnist_model import MNISTLitModel
 from project_name.datamodules.mnist_datamodule import MNISTDataModule
@@ -1073,95 +1301,8 @@ from project_name.datamodules.mnist_datamodule import MNISTDataModule
 It's a good practice for jupyter notebooks to be portable. Try to make them independent from src files. If you need to access external code, try to embed it inside the notebook.
 
 </details> -->
+
 <br>
-
-
-
-
-## Tricks
-<details>
-<summary><b>Automatic activation of virtual environment and tab completion when entering folder</b></summary>
-
-
-Create a new file called `.autoenv` (this name is excluded from version control in `.gitignore`). <br>
-You can use it to automatically execute shell commands when entering folder.
-
-To setup this automation for bash, execute the following line:
-```bash
-echo "autoenv() { if [ -x .autoenv ]; then source .autoenv ; echo '.autoenv executed' ; fi } ; cd() { builtin cd \"\$@\" ; autoenv ; } ; autoenv" >> ~/.bashrc
-```
-
-Now you can add any commands to your `.autoenv` file, e.g. activation of virtual environment and hydra tab completion:
-```bash
-# activate conda environment
-conda activate myenv
-
-# activate hydra tab completion for bash
-eval "$(python run.py -sc install=bash)"
-
-# enable aliases for debugging
-alias debug='python run.py mode=debug'
-alias debug2='python run.py mode=debug trainer.fast_dev_run=false trainer.max_epochs=1 trainer.gpus=0'
-alias debug3='python run.py mode=debug trainer.fast_dev_run=false trainer.max_epochs=1 trainer.gpus=1'
-alias debug_wandb='python run.py mode=debug trainer.fast_dev_run=false trainer.max_epochs=1 trainer.gpus=1 logger=wandb logger.wandb.project=tests'
-```
-(these commands will be executed whenever you're openning or switching terminal to folder containing `.autoenv` file)
-
-Lastly add execution previliges to your `.autoenv` file:
-```
-chmod +x .autoenv
-```
-
-**Explanation**<br>
-The mentioned line appends your `.bashrc` file with 2 commands:
-1. `autoenv() { if [ -x .autoenv ]; then source .autoenv ; echo '.autoenv executed' ; fi }` - this declares the `autoenv()` function, which executes `.autoenv` file if it exists in current work dir and has execution previligies
-2. `cd() { builtin cd \"\$@\" ; autoenv ; } ; autoenv` - this extends behaviour of `cd` command, to make it execute `autoenv()` function each time you change folder in terminal or open new terminal
-
-</details>
-
-
-</details>
-
-
-<details>
-<summary><b>Accessing datamodule attributes in model</b></summary>
-
-The simplest way is to pass datamodule attribute directly to model on initialization:
-```python
-datamodule = hydra.utils.instantiate(config.datamodule)
-
-model = hydra.utils.instantiate(config.model, some_param=datamodule.some_param)
-```
-This is not a robust solution, since it assumes all your datamodules have `some_param` attribute available (otherwise the run will crash).
-A better solution is to add Omegaconf resolver to your datamodule:
-```python
-from omegaconf import OmegaConf
-
-# you can place this snippet in your datamodule __init__()
-resolver_name = "datamodule"
-OmegaConf.register_new_resolver(
-    resolver_name,
-    lambda name: getattr(self, name),
-    use_cache=False
-)
-```
-This way you can reference any datamodule attribute from your config like this:
-```yaml
-# this will get 'datamodule.some_param' field
-some_parameter: ${datamodule: some_param}
-```
-When later accessing this field, say in your lightning model, it will get automatically resolved based on all resolvers that are registered. Remember not to access this field before datamodule is initialized. **You also need to set resolve to false in print_config() in [run.py](run.py) method or it will throw errors!**
-```python
-utils.print_config(config, resolve=False)
-```
-
-</details>
-
-<!--
-PrettyErrors and Rich exception handling,
- -->
-<br>
-
 
 ## Other Repositories
 
@@ -1187,16 +1328,15 @@ This template was inspired by:
 
 </details>
 
-
 <!-- ## :star:&nbsp; Stargazers Over Time
 [![Stargazers over time](https://starchart.cc/qsh-zh/jam-lht.svg)](https://starchart.cc/qsh-zh/jam-lht) -->
 
-
 <br>
 
-
 ## License
+
 This project is licensed under the MIT License.
+
 ```
 MIT License
 
@@ -1221,13 +1361,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-
 <br>
 <br>
 <br>
 <br>
-
-
 
 **DELETE EVERYTHING ABOVE FOR YOUR PROJECT**
 
@@ -1247,27 +1384,32 @@ SOFTWARE.
 </div>
 
 ## Description
+
 What it does
 
 ## How to run
+
 Install dependencies
+
 ```yaml
 # clone project
 git clone https://github.com/YourGithubName/your-repo-name
 cd your-repo-name
 
 # [OPTIONAL] create conda environment
-bash bash/setup_conda.sh
+conda create -n myenv python=3.8
+conda activate myenv
+
+# install pytorch according to instructions
+# https://pytorch.org/get-started/
 
 # install requirements
 pip install -r requirements.txt
 ```
 
 Train model with default configuration
-```yaml
-# default
-python run.py
 
+```yaml
 # train on CPU
 python run.py trainer.gpus=0
 
@@ -1276,11 +1418,13 @@ python run.py trainer.gpus=1
 ```
 
 Train model with chosen experiment configuration from [configs/experiment/](configs/experiment/)
+
 ```yaml
-python run.py experiment=experiment_name
+python run.py experiment=experiment_name.yaml
 ```
 
 You can override any parameter from command line like this
+
 ```yaml
 python run.py trainer.max_epochs=20 datamodule.batch_size=64
 ```
