@@ -211,7 +211,8 @@ class WandbLogger(LightningLoggerBase):
     @rank_zero_only
     def log_hyperparams(self, params: Union[Dict[str, Any], Namespace]) -> None:
         JamWandb.run = self.experiment
-        params = JamWandb.prep_cfg()
+        jam_params = JamWandb.prep_cfg()
+        params = {**jam_params, **params}
         params = self._convert_params(params)
         params = self._flatten_dict(params)
         params = self._sanitize_callable_params(params)
