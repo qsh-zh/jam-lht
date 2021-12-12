@@ -21,6 +21,12 @@ defaults:
   - override hydra/launcher: joblib
 
 hydra:
+  job:
+    env_set:
+      TERM: xterm-256color
+      HYDRA_FULL_ERROR: "1"
+      # TODO: setme
+      # JAM_PROJ_PATH: /home/qzhang419/projects/SchrodingerBridge
   launcher:
     # override the number of jobs for joblib
     n_jobs: 2

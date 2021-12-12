@@ -1,4 +1,5 @@
 [tool.poetry]
+# TODO: setme
 name = "jam-lht"
 version = "0.0.2"
 description = "decent template for starting deep learning projects"
