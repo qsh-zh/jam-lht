@@ -4,6 +4,28 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
+## [0.0.2] - 2021-12-13
+
+### Added
+
+* `doc/guide.md` more docs for quick start
+
+### Changed
+
+* Update doc
+* Works without jammy, [commit](https://github.com/qsh-zh/jam-lht/commit/a2ef2824a2419c88d15af582d9113f438d4a154a)
+* `setme` keywords, [commit](0b3212155d26aadf9bbd42c294309ef273db6e7c)
+* merge 1.2 from ashleve, [commit](https://github.com/qsh-zh/jam-lht/commit/ee4294fe1dc2a7ef1c98ecef4982684de3cd1209)
+
+### Deprecated
+
+### Removed
+
+* Remove jammy to deps, [commit](https://github.com/qsh-zh/jam-lht/commit/a2ef2824a2419c88d15af582d9113f438d4a154a)
+
+### Fixed
+
+* wandb number of parameters, [commit](https://github.com/qsh-zh/jam-lht/commit/fa29b658a91dc478692f3532d9f8b87ea3c119e8)
 
 ## [0.0.1] - 2021-11-17
 
