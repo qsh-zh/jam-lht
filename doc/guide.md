@@ -1,6 +1,19 @@
 # quickstart
 
-- search keyword `# TODO: setme` and overwrite
+### search keyword `# TODO: setme` and overwrite
+### install dependency
+*pip*
+```shell
+pip install -U pip setuptools
+pip install -e .
+```
+
+*[poetry](https://python-poetry.org/)*
+```shell
+#poetry
+poetry install --no-dev # minimal package
+poetry install # whole package
+```
 
 # Helper
 

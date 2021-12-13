@@ -13,9 +13,9 @@
 # limitations under the License.
 """
 Weights and Biases Logger
-with jammy Wandb Helper
 -------------------------
 """
+# pylint: skip-file
 import operator
 import os
 from argparse import Namespace

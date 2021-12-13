@@ -1,7 +1,6 @@
 from typing import List, Optional
 
 import hydra
-from jammy.utils.debug import decorate_exception_hook
 from omegaconf import DictConfig
 from pytorch_lightning import (
     Callback,
@@ -15,6 +14,11 @@ from pytorch_lightning.loggers import LightningLoggerBase
 from src.logger.jam_wandb import JamWandb
 from src.utils import utils
 
+try:
+    from jammy.utils.debug import decorate_exception_hook
+except ImportError:
+    # pylint: disable=ungrouped-imports
+    from src.utils.utils import decorate_exception_hook
 log = utils.get_logger(__name__)
 
 

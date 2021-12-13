@@ -1,13 +1,35 @@
+import contextlib
+import functools
 import logging
+import sys
 import warnings
 from typing import List, Sequence
 
 import pytorch_lightning as pl
 import rich.syntax
 import rich.tree
-from jammy import link_hyd_run
 from omegaconf import DictConfig, OmegaConf
 from pytorch_lightning.utilities import rank_zero_only
+
+try:
+    from jammy import link_hyd_run
+except ImportError:
+
+    def link_hyd_run(dst_fname=".latest_exp", proj_path=None):
+        import os
+
+        import hydra
+
+        exp_folder = os.getcwd()
+        if proj_path is None:
+            proj_path = hydra.utils.get_original_cwd()
+        target_path = os.path.join(proj_path, dst_fname)
+        try:
+            os.symlink(exp_folder, target_path)
+        except FileExistsError:
+            os.unlink(target_path)
+            os.symlink(exp_folder, target_path)
+        g_logger.info(f"{exp_folder} ==>> {target_path}")
 
 
 def get_logger(name=__name__) -> logging.Logger:
@@ -166,7 +188,12 @@ def auto_fgpu(config: DictConfig):
     # FIXME: only support one gpu, quick select
     if config.fgpu:
         if getattr(config.trainer, "gpus", 0) == 1:
-            from jammy.utils.gpu import select_gpu
+            try:
+                from jammy.utils.gpu import select_gpu
+            except ImportError:
+                g_logger.warning("auto_fgpu fails")
+                g_logger.warning("auto_fgpu needs jammy support")
+                return
 
             best_id = select_gpu(mem_prior=0.1)
             config.trainer.gpus = [
@@ -195,3 +222,49 @@ def finish(  # pylint: disable= unused-argument
             from src.logger.jam_wandb import JamWandb
 
             JamWandb.finish()
+
+
+def _custom_exception_hook(f_type, value, tb):
+    if hasattr(sys, "ps1") or not sys.stderr.isatty():
+        # we are in interactive mode or we don't have a tty-like
+        # device, so we call the default hook
+        sys.__excepthook__(f_type, value, tb)
+    else:
+        import traceback
+
+        import ipdb
+
+        # we are NOT in interactive mode, print the exception...
+        traceback.print_exception(f_type, value, tb)
+        # ...then start the debugger in post-mortem mode.
+        ipdb.post_mortem(tb)
+
+
+def hook_exception_ipdb():
+    if not hasattr(_custom_exception_hook, "origin_hook"):
+        _custom_exception_hook.origin_hook = sys.excepthook
+        sys.excepthook = _custom_exception_hook
+
+
+def unhook_exception_ipdb():
+    assert hasattr(_custom_exception_hook, "origin_hook")
+    sys.excepthook = _custom_exception_hook.origin_hook
+
+
+@contextlib.contextmanager
+def exception_hook(enable=True):
+    if enable:
+        hook_exception_ipdb()
+        yield
+        unhook_exception_ipdb()
+    else:
+        yield
+
+
+def decorate_exception_hook(func):
+    @functools.wraps(func)
+    def wrapped(*args, **kwargs):
+        with exception_hook():
+            return func(*args, **kwargs)
+
+    return wrapped
