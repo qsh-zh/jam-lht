@@ -40,6 +40,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 * Upgrade jammy 0.0.4
 * jammy jyd_link [commit](https://github.com/qsh-zh/jam-lht/commit/30565e042fc6cbb082f860a317823a7ab48677fb)
 * auto-fgpu [commit](https://github.com/qsh-zh/jam-lht/commit/5ab06fbb221edd533c13d8e373911bfecc69b4ea)
+* `# TODO: setme` for quick setup
 
 ### Changed
 
