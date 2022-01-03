@@ -3,6 +3,7 @@
 wandb:
   _target_: src.logger.wandb_logger.WandbLogger
   #_target_: pytorch_lightning.loggers.wandb.WandbLogger
+  # TODO: setme change wandb project
   project: "template-tests"
   name: ${name}
   save_dir: "."
