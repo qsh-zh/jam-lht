@@ -12,14 +12,14 @@ from pytorch_lightning import (
 from pytorch_lightning.loggers import LightningLoggerBase
 
 from src.logger.jam_wandb import JamWandb
-from src.utils import utils
+from src.utils import lht_utils
 
 try:
     from jammy.utils.debug import decorate_exception_hook
 except ImportError:
     # pylint: disable=ungrouped-imports
-    from src.utils.utils import decorate_exception_hook
-log = utils.get_logger(__name__)
+    from src.utils.lht_utils import decorate_exception_hook
+log = lht_utils.get_logger(__name__)
 
 
 @decorate_exception_hook
@@ -74,7 +74,7 @@ def train(config: DictConfig) -> Optional[float]:
     log.info(
         f"Instantiating trainer <{config.trainer._target_}>"  # pylint: disable=protected-access
     )
-    utils.auto_fgpu(config)
+    lht_utils.auto_fgpu(config)
     trainer: Trainer = hydra.utils.instantiate(
         config.trainer, callbacks=callbacks, logger=logger, _convert_="partial"
     )
@@ -82,7 +82,7 @@ def train(config: DictConfig) -> Optional[float]:
     # Send some parameters from config to all lightning loggers
     log.info("Logging hyperparameters!")
     JamWandb.g_cfg = config
-    utils.log_hyperparameters(
+    lht_utils.log_hyperparameters(
         config=config,
         model=model,
         datamodule=datamodule,
@@ -105,7 +105,7 @@ def train(config: DictConfig) -> Optional[float]:
 
     # Make sure everything closed properly
     log.info("Finalizing!")
-    utils.finish(
+    lht_utils.finish(
         config=config,
         model=model,
         datamodule=datamodule,

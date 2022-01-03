@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
+
+## [unReleased] - 2021-MM-DD
+
+### Added
+
+* `pytest -k "not slow"` works, [commit](https://github.com/qsh-zh/jam-lht/commit/4def8416ce68db89b2ec887c70cfca6478dfb372)
+* merge [ashleve](https://github.com/ashleve/lightning-hydra-template/tree/8b62eef9d0d9c863e88c0992595688d6289d954f)
+
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+
 ## [0.0.2] - 2021-12-13
 
 ### Added

@@ -224,7 +224,7 @@ def finish(  # pylint: disable= unused-argument
             JamWandb.finish()
 
 
-def _custom_exception_hook(f_type, value, tb):
+def _custom_exception_hook(f_type, value, tb):  # pylint: disable=invalid-name
     if hasattr(sys, "ps1") or not sys.stderr.isatty():
         # we are in interactive mode or we don't have a tty-like
         # device, so we call the default hook
