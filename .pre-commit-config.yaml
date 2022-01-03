@@ -21,7 +21,7 @@ repos:
       - id: isort
         additional_dependencies: [toml]
         exclude: ^.*/?setup\.py$
-        args: ["--profile", "black"]
+        args: ["--profile", "black", "--filter-files"]
 
   - repo: https://github.com/adrienverge/yamllint.git
     rev: v1.25.0
