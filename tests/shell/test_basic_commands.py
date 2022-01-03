@@ -1,4 +1,5 @@
 import pytest
+
 from tests.helpers.run_command import run_command
 from tests.helpers.runif import RunIf
 
@@ -29,6 +30,7 @@ def test_gpu():
         "++trainer.gpus=1",
     ]
     run_command(command)
+
 
 @RunIf(min_gpus=1)
 @pytest.mark.skip
