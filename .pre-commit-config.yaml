@@ -23,11 +23,6 @@ repos:
     hooks:
       - id: isort
         args: ["--profile", "black", "--filter-files"]
-  - repo: https://github.com/myint/docformatter
-    rev: v1.4
-    hooks:
-      - id: docformatter
-        args: [--in-place, --wrap-summaries, "99", --wrap-descriptions, "92"]
 
   # yaml formatting
     rev: v2.5.1
