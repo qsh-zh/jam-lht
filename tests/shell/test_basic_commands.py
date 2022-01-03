@@ -1,3 +1,4 @@
+import pytest
 from tests.helpers.run_command import run_command
 from tests.helpers.runif import RunIf
 
@@ -29,8 +30,8 @@ def test_gpu():
     ]
     run_command(command)
 
-
 @RunIf(min_gpus=1)
+@pytest.mark.skip
 def test_mixed_precision():
     """Test running 1 epoch with pytorch native automatic mixed precision (AMP)."""
     command = [
