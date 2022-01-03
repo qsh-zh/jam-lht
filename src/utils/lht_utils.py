@@ -184,24 +184,22 @@ def log_hyperparameters(
     trainer.logger.log_hyperparams(hparams)
 
 
-def auto_fgpu(config: DictConfig):
-    # FIXME: only support one gpu, quick select
-    if config.fgpu:
-        if getattr(config.trainer, "gpus", 0) == 1:
+def auto_gpu(config: DictConfig):
+    if config.agpu:
+        if getattr(config.trainer, "gpus", 0) > 0:
             try:
-                from jammy.utils.gpu import select_gpu
+                from jammy.cli.gpu_sc import get_gpu_by_utils
             except ImportError:
-                g_logger.warning("auto_fgpu fails")
-                g_logger.warning("auto_fgpu needs jammy support")
+                g_logger.warning("auto_gpu fails")
+                g_logger.warning("auto_gpu needs jammy support")
                 return
 
-            best_id = select_gpu(mem_prior=0.1)
-            config.trainer.gpus = [
-                best_id,
-            ]
-            g_logger.warning(f"fgpu select device {best_id}")
-        elif int(getattr(config.trainer, "gpus", 0)) > 1:
-            g_logger.warning(f"fgpu only support gpus=1, but get {config.trainer.gpus}")
+            # TODO: setme tune sleep_sec for auto_gpu
+            best_id = get_gpu_by_utils(
+                num_gpus=getattr(config.trainer, "gpus", 1), sleep_sec=10
+            )
+            config.trainer.gpus = best_id
+            g_logger.warning(f"auto_gpu select device {best_id}")
 
 
 def finish(  # pylint: disable= unused-argument

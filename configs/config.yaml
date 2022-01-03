@@ -60,4 +60,4 @@ seed: null
 name: null
 
 # auto select gpu with lowest util rate
-fgpu: true
+agpu: true

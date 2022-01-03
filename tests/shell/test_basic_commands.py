@@ -26,6 +26,7 @@ def test_gpu():
     """Test running 1 epoch on GPU."""
     command = [
         "run.py",
+        "agpu=false",
         "++trainer.max_epochs=1",
         "++trainer.gpus=1",
     ]

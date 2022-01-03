@@ -15,6 +15,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 
+`src.utils.utils -> src.utils.lht_utils`, [commit](https://github.com/qsh-zh/jam-lht/commit/a5d02b7ff1c8ece38b16651dab525844018d2ea3)
+`jammy@0.0.5`
+`auto_fgpu -> auto_gpu, config.agpu`
+
 ### Deprecated
 
 ### Removed
