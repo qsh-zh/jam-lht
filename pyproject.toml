@@ -1,7 +1,7 @@
 [tool.poetry]
 # TODO: setme
 name = "jam-lht"
-version = "0.0.3"
+version = "0.0.4"
 description = "decent template for starting deep learning projects"
 authors = ["qsh.27"]
 packages = [
@@ -36,7 +36,7 @@ pre-commit = "^2.13.0"
 jupyterlab = "^3.0.1"
 pytest = "^6.2.1"
 pylint = "^2.9.5"
-jammy = "0.0.5"
+jammy = "0.0.6"
 
 [build-system]
 requires = ["poetry-core>=1.0.0", "setuptools ~= 58.0"]
