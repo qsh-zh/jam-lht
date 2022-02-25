@@ -2,20 +2,30 @@
 
 ### search keyword `# TODO: setme` and overwrite
 ### install dependency
-*pip*
-```shell
-pip install -U pip setuptools
-pip install -e .
-```
 
-*[poetry](https://python-poetry.org/)*
+
+*[poetry](https://python-poetry.org/)* (**recommended**)
 ```shell
 #poetry
 poetry install --no-dev # minimal package
 poetry install # whole package
 ```
 
-# Helper
+*pip* (not recommended)
+```shell
+pip install -U pip setuptools
+pip install -e .
+```
 
-- [merge the forked repo](https://adrientorris.github.io/github/how-to-update-a-forked-repository-from-the-ui-on-github)
-- Only write `CHANGELOG.log` in main or dev branch
+### run
+
+```shell
+# see more on README.md
+python run.py
+```
+
+### dev
+
+```shell
+pre-commit install # WARN: use your own pylintrc if enable pylint
+```

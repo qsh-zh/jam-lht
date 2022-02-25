@@ -11,6 +11,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 * `pytest -k "not slow"` works, [commit](https://github.com/qsh-zh/jam-lht/commit/4def8416ce68db89b2ec887c70cfca6478dfb372)
 * merge [ashleve](https://github.com/ashleve/lightning-hydra-template/tree/8b62eef9d0d9c863e88c0992595688d6289d954f)
+* update documents in [doc/guide.md](doc/guide.md)
 
 
 ### Changed
