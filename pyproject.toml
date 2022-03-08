@@ -37,6 +37,11 @@ jupyterlab = "^3.0.1"
 pytest = "^6.2.1"
 pylint = "^2.9.5"
 jammy = "0.0.6"
+poethepoet = "^0.10.0"
+
+# run poe cuda11 to run the following comments
+[tool.poe.tasks]
+cuda11="pip install torch==1.9.1+cu111 torchvision==0.10.1+cu111 -f https://download.pytorch.org/whl/torch_stable.html"
 
 [build-system]
 requires = ["poetry-core>=1.0.0", "setuptools ~= 58.0"]
