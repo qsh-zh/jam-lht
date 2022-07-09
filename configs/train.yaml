@@ -28,8 +28,7 @@ hydra:
     env_set:
       TERM: xterm-256color
       HYDRA_FULL_ERROR: "1"
-      # TODO: setme
-      # JAM_PROJ_PATH: /home/qzhang419/projects/SchrodingerBridge
+      JAM_PROJ_PATH: /home/qzhang419/projects/jam-dm
   launcher:
     # override the number of jobs for joblib
     n_jobs: 2
@@ -40,7 +39,7 @@ hydra:
 work_dir: ${hydra:runtime.cwd}
 
 # path to folder with data
-data_dir: ${work_dir}/data/
+data_dir: ~/project/dpdata
 
 # pretty print config at the start of the run using Rich library
 print_config: True
