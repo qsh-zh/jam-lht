@@ -1,5 +1,3 @@
-import pytest
-
 from tests.helpers.run_command import run_command
 from tests.helpers.runif import RunIf
 
