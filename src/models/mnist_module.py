@@ -5,12 +5,11 @@ from pytorch_lightning import LightningModule
 from torchmetrics import MaxMetric
 from torchmetrics.classification.accuracy import Accuracy
 
-from src.models.modules.simple_dense_net import SimpleDenseNet
+from src.models.components.simple_dense_net import SimpleDenseNet
 
 
-class MNISTLitModel(LightningModule):
-    """
-    Example of LightningModule for MNIST classification.
+class MNISTLitModule(LightningModule):
+    """Example of LightningModule for MNIST classification.
 
     A LightningModule organizes your PyTorch code into 5 sections:
         - Computations (init).
@@ -25,11 +24,7 @@ class MNISTLitModel(LightningModule):
 
     def __init__(
         self,
-        input_size: int = 784,
-        lin1_size: int = 256,
-        lin2_size: int = 256,
-        lin3_size: int = 256,
-        output_size: int = 10,
+        net: torch.nn.Module,
         lr: float = 0.001,
         weight_decay: float = 0.0005,
     ):
@@ -39,7 +34,7 @@ class MNISTLitModel(LightningModule):
         # it also ensures init params will be stored in ckpt
         self.save_hyperparameters(logger=False)
 
-        self.model = SimpleDenseNet(hparams=self.hparams)
+        self.net = net
 
         # loss function
         self.criterion = torch.nn.CrossEntropyLoss()
@@ -54,7 +49,12 @@ class MNISTLitModel(LightningModule):
         self.val_acc_best = MaxMetric()
 
     def forward(self, x: torch.Tensor):
-        return self.model(x)
+        return self.net(x)
+
+    def on_train_start(self):
+        # by default lightning executes validation step sanity checks before training starts,
+        # so we need to make sure val_acc_best doesn't store accuracy from these checks
+        self.val_acc_best.reset()
 
     def step(self, batch: Any):
         x, y = batch
@@ -72,7 +72,7 @@ class MNISTLitModel(LightningModule):
         self.log("train/acc", acc, on_step=False, on_epoch=True, prog_bar=True)
 
         # we can return here dict with any tensors
-        # and then read it in some callback or in `training_epoch_end()`` below
+        # and then read it in some callback or in `training_epoch_end()` below
         # remember to always return loss from `training_step()` or else backpropagation will fail!
         return {"loss": loss, "preds": preds, "targets": targets}
 
@@ -109,7 +109,7 @@ class MNISTLitModel(LightningModule):
         pass
 
     def on_epoch_end(self):
-        # reset metrics at the end of every epoch!
+        # reset metrics at the end of every epoch
         self.train_acc.reset()
         self.test_acc.reset()
         self.val_acc.reset()
