@@ -22,7 +22,7 @@ except ImportError:
     from src.utils.lht_utils import decorate_exception_hook
 log = lht_utils.get_logger(__name__)
 
-
+# pylint: disable=too-many-branches, protected-access
 @decorate_exception_hook
 def train(config: DictConfig) -> Optional[float]:
     """Contains the training pipeline. Can additionally evaluate model on a testset, using best
@@ -52,11 +52,15 @@ def train(config: DictConfig) -> Optional[float]:
     )
     datamodule: LightningDataModule = hydra.utils.instantiate(config.datamodule)
 
+    # # Init lightning model
+    # log.info(
+    #     f"Instantiating model <{config.model.module._target_}>"  # pylint: disable=protected-access
+    # )
+    # model: LightningModule = hydra.utils.instantiate(config.model.module, config.model)
+
     # Init lightning model
-    log.info(
-        f"Instantiating model <{config.model.module._target_}>"  # pylint: disable=protected-access
-    )
-    model: LightningModule = hydra.utils.instantiate(config.model.module, config.model)
+    log.info(f"Instantiating model <{config.model._target_}>")
+    model: LightningModule = hydra.utils.instantiate(config.model)
 
     # Init lightning callbacks
     callbacks: List[Callback] = []
@@ -64,8 +68,8 @@ def train(config: DictConfig) -> Optional[float]:
         for _, cb_conf in config.callbacks.items():
             if "_target_" in cb_conf:
                 log.info(
-                    f"Instantiating callback <{cb_conf._target_}>"  # pylint: disable=protected-access
-                )
+                    f"Instantiating callback <{cb_conf._target_}>"
+                )  # pylint: disable=protected-access
                 callbacks.append(hydra.utils.instantiate(cb_conf))
 
     # Init lightning loggers
@@ -74,14 +78,14 @@ def train(config: DictConfig) -> Optional[float]:
         for _, lg_conf in config.logger.items():
             if "_target_" in lg_conf:
                 log.info(
-                    f"Instantiating logger <{lg_conf._target_}>"  # pylint: disable=protected-access
-                )
+                    f"Instantiating logger <{lg_conf._target_}>"
+                )  # pylint: disable=protected-access
                 logger.append(hydra.utils.instantiate(lg_conf))
 
     # Init lightning trainer
     log.info(
-        f"Instantiating trainer <{config.trainer._target_}>"  # pylint: disable=protected-access
-    )
+        f"Instantiating trainer <{config.trainer._target_}>"
+    )  # pylint: disable=protected-access
     lht_utils.auto_gpu(config)
     trainer: Trainer = hydra.utils.instantiate(
         config.trainer, callbacks=callbacks, logger=logger, _convert_="partial"
@@ -147,4 +151,4 @@ def train(config: DictConfig) -> Optional[float]:
     optimized_metric = config.get("optimized_metric")
     if optimized_metric:
         return trainer.callback_metrics[optimized_metric]
-    return None
+    return score

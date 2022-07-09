@@ -11,9 +11,10 @@ repos:
 
   # python code formatting
   - repo: https://github.com/psf/black
-    rev: 22.1.0
+    rev: 21.5b1
     hooks:
       - id: black
+        args: [--line-length, "100"]
 
   # python import sorting
   - repo: https://github.com/PyCQA/isort
@@ -24,8 +25,6 @@ repos:
         exclude: ^.*/?setup\.py$
         args: ["--profile", "black", "--filter-files"]
 
-  - repo: https://github.com/adrienverge/yamllint.git
-    rev: v1.25.0
   # python docstring formatting
   - repo: https://github.com/myint/docformatter
     rev: v1.4
@@ -33,12 +32,18 @@ repos:
       - id: docformatter
         args: [--in-place, --wrap-summaries, "99", --wrap-descriptions, "92"]
 
-  # yaml formatting
-  - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: v2.5.1
+  - repo: https://github.com/adrienverge/yamllint.git
+    rev: v1.25.0
     hooks:
       - id: yamllint
         args: [-c=.yamllint]
+
+  # yaml formatting
+  # - repo: https://github.com/pre-commit/mirrors-prettier
+  #   rev: v2.5.1
+  #   hooks:
+  #     - id: prettier
+  #       types: [yaml]
 
   - repo: local
     hooks:

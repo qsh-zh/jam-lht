@@ -1,12 +1,13 @@
 from typing import Any, List
 
 import torch
-from omegaconf import DictConfig
+
+# from omegaconf import DictConfig
 from pytorch_lightning import LightningModule
 from torchmetrics import MaxMetric
 from torchmetrics.classification.accuracy import Accuracy
 
-from src.networks.simple_dense_net import SimpleDenseNet
+# from src.networks.simple_dense_net import SimpleDenseNet
 
 # pylint: disable=too-many-ancestors,arguments-differ,attribute-defined-outside-init,unused-argument,too-many-instance-attributes, abstract-method
 
@@ -36,6 +37,8 @@ class MNISTLitModule(LightningModule):
         # this line allows to access init params with 'self.hparams' attribute
         # it also ensures init params will be stored in ckpt
         self.save_hyperparameters(logger=False)
+
+        self.net = net
 
         self.criterion = torch.nn.CrossEntropyLoss()
         # use separate metric instance for train, val and test step
@@ -92,9 +95,7 @@ class MNISTLitModule(LightningModule):
     def validation_epoch_end(self, outputs: List[Any]):
         acc = self.val_acc.compute()  # get val accuracy from current epoch
         self.val_acc_best.update(acc)
-        self.log(
-            "val/acc_best", self.val_acc_best.compute(), on_epoch=True, prog_bar=True
-        )
+        self.log("val/acc_best", self.val_acc_best.compute(), on_epoch=True, prog_bar=True)
 
     def test_step(self, batch: Any, batch_idx: int):
         loss, preds, targets = self.step(batch)
@@ -124,6 +125,6 @@ class MNISTLitModule(LightningModule):
         """
         return torch.optim.Adam(
             params=self.parameters(),
-            lr=self.hparams.cfg.lr,
-            weight_decay=self.hparams.cfg.weight_decay,
+            lr=self.hparams.lr,
+            weight_decay=self.hparams.weight_decay,
         )

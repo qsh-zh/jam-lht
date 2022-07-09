@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 
-## [unReleased] - 2021-MM-DD
+## [0.0.3] - 2022-07-09
 
 ### Added
 
@@ -13,12 +13,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 * merge [ashleve](https://github.com/ashleve/lightning-hydra-template/tree/8b62eef9d0d9c863e88c0992595688d6289d954f)
 * update documents in [doc/guide.md](doc/guide.md)
 * adding `poethepoet` run commands
+* merge [ashleve](https://github.com/ashleve/lightning-hydra-template/commit/6a92395ed6afd573fa44dd3a054a603acbdcac06)
 
 
 ### Changed
 
 * `src.utils.utils -> src.utils.lht_utils`, [commit](https://github.com/qsh-zh/jam-lht/commit/a5d02b7ff1c8ece38b16651dab525844018d2ea3)
-* `jammy@0.0.6`
+* `jammy@0.0.9`
 * `auto_fgpu -> auto_gpu, config.agpu`, [issue](https://github.com/qsh-zh/jam-lht/issues/5), [commit](https://github.com/qsh-zh/jam-lht/commit/9d53cbd9b5c9405379515935d932f06e44e5f4a0)
 
 ### Deprecated

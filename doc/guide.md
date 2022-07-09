@@ -21,11 +21,31 @@ pip install -e .
 
 ```shell
 # see more on README.md
-python run.py
+python main.py
 ```
 
 ### dev
 
 ```shell
 pre-commit install # WARN: use your own pylintrc if enable pylint
+# install torch
+poe cuda13
 ```
+
+## dev dep
+
+```shell
+poetry add jammy==0.0.9 --dev
+```
+
+## to pip
+
+```shell
+poetry export -f requirements.txt > requirements.txt
+python -m pip install -r requirements.txt
+poetry install
+```
+
+## issue
+
+- [module 'distutils' has no attribute 'version'](https://github.com/pytorch/pytorch/issues/69894) `poetry add setuptools@latest`
