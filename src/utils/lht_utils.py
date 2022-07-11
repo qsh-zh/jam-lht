@@ -58,6 +58,7 @@ g_logger = get_logger(__name__)
 
 def extras(config: DictConfig) -> None:
     """A couple of optional utilities, controlled by main config file:
+
     - disabling warnings
     - forcing debug friendly configuration
     - verifying experiment name is set when running in experiment mode
@@ -89,9 +90,7 @@ def extras(config: DictConfig) -> None:
     # force debugger friendly configuration if <config.trainer.fast_dev_run=True>
     # debuggers don't like GPUs and multiprocessing
     if config.trainer.get("fast_dev_run"):
-        log.info(
-            "Forcing debugger friendly configuration! <config.trainer.fast_dev_run=True>"
-        )
+        log.info("Forcing debugger friendly configuration! <config.trainer.fast_dev_run=True>")
         if config.trainer.get("gpus"):
             config.trainer.gpus = 0
         if config.datamodule.get("pin_memory"):
@@ -181,7 +180,8 @@ def log_hyperparameters(
     )
 
     # send hparams to all loggers
-    trainer.logger.log_hyperparams(hparams)
+    if trainer.logger:
+        trainer.logger.log_hyperparams(hparams)
 
 
 def auto_gpu(config: DictConfig):
@@ -195,9 +195,7 @@ def auto_gpu(config: DictConfig):
                 return
 
             # TODO: setme tune sleep_sec for auto_gpu
-            best_id = get_gpu_by_utils(
-                num_gpus=getattr(config.trainer, "gpus", 1), sleep_sec=10
-            )
+            best_id = get_gpu_by_utils(num_gpus=getattr(config.trainer, "gpus", 1), sleep_sec=10)
             config.trainer.gpus = best_id
             g_logger.warning(f"auto_gpu select device {best_id}")
 

@@ -29,6 +29,12 @@ from pytorch_lightning.loggers.base import LightningLoggerBase, rank_zero_experi
 from pytorch_lightning.utilities import _module_available, rank_zero_only
 from pytorch_lightning.utilities.exceptions import MisconfigurationException
 from pytorch_lightning.utilities.imports import _compare_version
+from pytorch_lightning.utilities.logger import (
+    _add_prefix,
+    _convert_params,
+    _flatten_dict,
+    _sanitize_callable_params,
+)
 from pytorch_lightning.utilities.warnings import WarningCache
 
 warning_cache = WarningCache()
@@ -192,16 +198,12 @@ class WandbLogger(LightningLoggerBase):
         if self._experiment is None:
             if self._offline:
                 os.environ["WANDB_MODE"] = "dryrun"
-            self._experiment = (
-                wandb.init(**self._wandb_init) if wandb.run is None else wandb.run
-            )
+            self._experiment = wandb.init(**self._wandb_init) if wandb.run is None else wandb.run
 
         # define default x-axis (for latest wandb versions)
         if getattr(self._experiment, "define_metric", None):
             self._experiment.define_metric("trainer/global_step")
-            self._experiment.define_metric(
-                "*", step_metric="trainer/global_step", step_sync=True
-            )
+            self._experiment.define_metric("*", step_metric="trainer/global_step", step_sync=True)
 
         return self._experiment
 
@@ -213,18 +215,16 @@ class WandbLogger(LightningLoggerBase):
         JamWandb.run = self.experiment
         jam_params = JamWandb.prep_cfg()
         params = {**jam_params, **params}
-        params = self._convert_params(params)
-        params = self._flatten_dict(params)
-        params = self._sanitize_callable_params(params)
+        params = _convert_params(params)
+        params = _flatten_dict(params)
+        params = _sanitize_callable_params(params)
         self.experiment.config.update(params, allow_val_change=True)
 
     @rank_zero_only
-    def log_metrics(
-        self, metrics: Dict[str, float], step: Optional[int] = None
-    ) -> None:
+    def log_metrics(self, metrics: Dict[str, float], step: Optional[int] = None) -> None:
         assert rank_zero_only.rank == 0, "experiment tried to log from global_rank != 0"
 
-        metrics = self._add_prefix(metrics)
+        metrics = _add_prefix(metrics, self._prefix, self.LOGGER_JOIN_CHAR)
         if step is not None:
             self.experiment.log({**metrics, "trainer/global_step": step})
         else:
@@ -244,9 +244,7 @@ class WandbLogger(LightningLoggerBase):
         # don't create an experiment if we don't have one
         return self._experiment.id if self._experiment else self._id
 
-    def after_save_checkpoint(
-        self, checkpoint_callback: "ReferenceType[ModelCheckpoint]"
-    ) -> None:
+    def after_save_checkpoint(self, checkpoint_callback: "ReferenceType[ModelCheckpoint]") -> None:
         # log checkpoints as artifacts
         if (
             self._log_model == "all"
@@ -274,17 +272,12 @@ class WandbLogger(LightningLoggerBase):
             **checkpoint_callback.best_k_models,
         }
         checkpoints = sorted(
-            [
-                (Path(p).stat().st_mtime, p, s)
-                for p, s in checkpoints.items()
-                if Path(p).is_file()
-            ]
+            [(Path(p).stat().st_mtime, p, s) for p, s in checkpoints.items() if Path(p).is_file()]
         )
         checkpoints = [
             c
             for c in checkpoints
-            if c[1] not in self._logged_model_time.keys()
-            or self._logged_model_time[c[1]] < c[0]
+            if c[1] not in self._logged_model_time.keys() or self._logged_model_time[c[1]] < c[0]
         ]
 
         # log iteratively all new checkpoints
@@ -315,11 +308,7 @@ class WandbLogger(LightningLoggerBase):
                 name=f"model-{self.experiment.id}", type="model", metadata=metadata
             )
             artifact.add_file(p, name="model.ckpt")
-            aliases = (
-                ["latest", "best"]
-                if p == checkpoint_callback.best_model_path
-                else ["latest"]
-            )
+            aliases = ["latest", "best"] if p == checkpoint_callback.best_model_path else ["latest"]
             self.experiment.log_artifact(artifact, aliases=aliases)
             # remember logged models - timestamp needed in case filename didn't change (lastkckpt or custom name)
             self._logged_model_time[p] = t
