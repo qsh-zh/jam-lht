@@ -82,7 +82,7 @@ def extras(config: DictConfig) -> None:
     if config.get("experiment_mode") and not config.get("name"):
         log.info(
             "Running in experiment mode without the experiment name specified! "
-            "Use `python run.py mode=exp name=experiment_name`"
+            "Use `python train.py name=experiment_name`"
         )
         log.info("Exiting...")
         exit()

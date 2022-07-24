@@ -1,11 +1,11 @@
 # @package _global_
 
 # verify the loss curve:
-# python run.py experiment=example_simple.yaml logger=wandb logger.wandb.tags=\[verify,basic\] logger.wandb.name=verify
+# python train.py experiment=example_simple.yaml logger=wandb logger.wandb.tags=\[verify,basic\] logger.wandb.name=verify
 
 defaults:
   - override /datamodule: mnist.yaml
-  - override /model: mnist.yaml
+  - override /model: mnist
   - override /callbacks: default.yaml
   - override /logger: null
   - override /trainer: default.yaml

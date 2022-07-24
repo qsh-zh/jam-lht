@@ -7,7 +7,7 @@ defaults:
   - model: mnist.yaml
   - datamodule: mnist.yaml
   - callbacks: default.yaml
-  - logger: null # set logger here or use command line (e.g. `python run.py logger=wandb`)
+  - logger: null # set logger here or use command line (e.g. `python train.py logger=wandb`)
   - log_dir: default.yaml
   - debug: null
 
@@ -41,6 +41,10 @@ work_dir: ${hydra:runtime.cwd}
 
 # path to folder with data
 data_dir: ${work_dir}/data/
+
+# choice
+# https://github.com/facebookresearch/hydra/discussions/2299#discussioncomment-3175435
+choice: ${hydra:runtime.choices}
 
 # pretty print config at the start of the run using Rich library
 print_config: True
