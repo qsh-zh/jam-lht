@@ -199,6 +199,9 @@ class WandbLogger(LightningLoggerBase):
             if self._offline:
                 os.environ["WANDB_MODE"] = "dryrun"
             self._experiment = wandb.init(**self._wandb_init) if wandb.run is None else wandb.run
+            # TODO: qsh, auto resume?
+            with open("wandb_id.txt", "w") as f:
+                f.write(f'{wandb.run.id}')
 
         # define default x-axis (for latest wandb versions)
         if getattr(self._experiment, "define_metric", None):
